@@ -1,0 +1,3251 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="APIS, plataforma inteligente de servicios, APIs y herramientas interactivas.">
+  <title>APIS | Plataforma de Servicios y Herramientas</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5.3 & Icons & jsTree -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jstree@3.3.17/dist/themes/default/style.min.css">
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --bg-gradient: radial-gradient(circle at 15% 0%, rgba(99, 102, 241, 0.08), transparent 40%),
+                     radial-gradient(circle at 85% 20%, rgba(14, 165, 233, 0.07), transparent 35%);
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --surface-3: #f1f5f9;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-soft: #eef2ff;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --sidebar: #0b0f19;
+      --sidebar-surface: #151c2c;
+      --sidebar-muted: #94a3b8;
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+      --shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+      --shadow-hover: 0 20px 35px -8px rgba(99, 102, 241, 0.14), 0 8px 16px -4px rgba(15, 23, 42, 0.05);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 9px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #090d16;
+      --bg-gradient: radial-gradient(circle at 15% 0%, rgba(99, 102, 241, 0.14), transparent 45%),
+                     radial-gradient(circle at 85% 15%, rgba(14, 165, 233, 0.1), transparent 40%);
+      --surface: #111827;
+      --surface-2: #1e293b;
+      --surface-3: #0f172a;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #1f2937;
+      --accent: #818cf8;
+      --accent-hover: #6366f1;
+      --accent-soft: rgba(99, 102, 241, 0.16);
+      --accent-glow: rgba(129, 140, 248, 0.28);
+      --sidebar: #060911;
+      --sidebar-surface: #111827;
+      --sidebar-muted: #94a3b8;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+      --shadow: 0 12px 34px -4px rgba(0, 0, 0, 0.45);
+      --shadow-hover: 0 20px 40px -8px rgba(99, 102, 241, 0.25);
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      transition: background-color .25s ease, color .25s ease;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .brand, .topbar-title, .stat-value {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+
+    /* App Layout & Sidebar */
+    .app-shell { min-height: 100vh; display: flex; flex-direction: column; }
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 268px;
+      background: var(--sidebar);
+      color: #fff;
+      padding: 22px 16px 18px;
+      display: flex;
+      flex-direction: column;
+      z-index: 1040;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      transition: transform .28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .brand {
+      height: 54px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 0 10px;
+      margin-bottom: 22px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: .06em;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #818cf8 0%, #4f46e5 100%);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+      font-size: 18px;
+      color: #fff;
+      transition: transform .2s ease;
+    }
+    .brand:hover .brand-mark { transform: rotate(-6deg) scale(1.06); }
+    .brand-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 3px 7px;
+      border-radius: 99px;
+      background: rgba(129, 140, 248, 0.16);
+      color: #a5b4fc;
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      margin-left: auto;
+    }
+
+    .nav-label {
+      padding: 0 12px 8px;
+      color: #64748b;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .side-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+      padding-right: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: #334155 transparent;
+    }
+    .side-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 0;
+      border-radius: 11px;
+      padding: 10px 13px;
+      background: transparent;
+      color: var(--sidebar-muted);
+      font-size: 13.5px;
+      font-weight: 500;
+      text-align: left;
+      text-decoration: none;
+      transition: all .18s ease;
+      position: relative;
+    }
+    .side-link i {
+      width: 20px;
+      text-align: center;
+      font-size: 16px;
+      transition: transform .18s ease, color .18s ease;
+    }
+    .side-link:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+    }
+    .side-link:hover i { transform: translateX(2px); color: #a5b4fc; }
+    .side-link.active {
+      background: linear-gradient(90deg, rgba(99, 102, 241, 0.22) 0%, rgba(99, 102, 241, 0.06) 100%);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: inset 3px 0 0 #818cf8;
+    }
+    .side-link.active i { color: #818cf8; }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding: 14px 12px 4px;
+      color: #94a3b8;
+      font-size: 11.5px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .sidebar-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      box-shadow: 0 0 8px #10b981;
+      margin-right: 6px;
+    }
+
+    /* Main Area & Topbar */
+    .main-area {
+      margin-left: 268px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      height: 78px;
+      padding: 0 clamp(18px, 3.5vw, 44px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--surface) 88%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 1010;
+    }
+    .breadcrumb-small {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .breadcrumb-brand {
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .topbar-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 2px 0 0;
+      color: var(--text);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Quick Jumper Search in Topbar */
+    .topbar-search {
+      position: relative;
+      width: 240px;
+    }
+    .topbar-search input {
+      width: 100%;
+      height: 38px;
+      padding: 0 36px 0 34px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 12.5px;
+      transition: all .2s ease;
+    }
+    .topbar-search input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: var(--surface);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .topbar-search .search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 13px;
+      pointer-events: none;
+    }
+    .topbar-search .kbd-badge {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: monospace;
+      pointer-events: none;
+    }
+    .quick-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow-hover);
+      padding: 6px;
+      display: none;
+      z-index: 1050;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+    .quick-dropdown.show { display: block; }
+    .quick-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 8px 10px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      border-radius: 8px;
+      font-size: 12.5px;
+      text-align: left;
+    }
+    .quick-item:hover { background: var(--accent-soft); color: var(--accent); }
+
+    .icon-button {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: var(--text);
+      transition: all .18s ease;
+    }
+    .icon-button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      font-weight: 800;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Content Area */
+    .content {
+      max-width: 1440px;
+      width: 100%;
+      padding: 32px clamp(18px, 3.5vw, 44px) 28px;
+      margin: 0 auto;
+      flex: 1;
+    }
+    .page-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--accent);
+      margin-bottom: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .page-heading h1 {
+      font-size: clamp(23px, 2.6vw, 31px);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      margin: 0 0 6px;
+    }
+    .page-heading p {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* Panels & Cards */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .panel-title {
+      font-size: 16.5px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .panel-subtitle {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 4px 0 0;
+    }
+
+    /* Dashboard Stat Cards */
+    .stat-card {
+      padding: 20px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      right: -20px;
+      bottom: -20px;
+      width: 95px;
+      height: 95px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .stat-label { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+    .stat-value { font-size: 27px; font-weight: 800; letter-spacing: -.03em; margin: 10px 0 4px; }
+    .stat-caption { font-size: 11.5px; color: var(--muted); }
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      background: var(--accent-soft);
+      font-size: 19px;
+    }
+
+    /* Module Grid Cards */
+    .module-card {
+      height: 100%;
+      padding: 20px;
+      transition: transform .22s cubic-bezier(0.34, 1.56, 0.64, 1), border-color .22s ease, box-shadow .22s ease;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .module-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: var(--shadow-hover);
+    }
+    .module-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 20px;
+      margin-bottom: 15px;
+      transition: transform .2s ease, background .2s ease, color .2s ease;
+    }
+    .module-card:hover .module-icon {
+      background: var(--accent);
+      color: #fff;
+      transform: scale(1.06);
+    }
+    .module-card h3 { font-size: 15px; font-weight: 700; margin: 0 0 6px; }
+    .module-card p { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; line-height: 1.55; flex: 1; }
+    .module-tag {
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 99px;
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+    }
+    .module-arrow {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      background: var(--surface-2);
+      font-size: 13px;
+      transition: all .2s ease;
+    }
+    .module-card:hover .module-arrow {
+      background: var(--accent-soft);
+      color: var(--accent);
+      transform: translate(2px, -2px);
+    }
+
+    /* Filter Pills */
+    .filter-pill {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 13px;
+      border-radius: 99px;
+      transition: all .18s ease;
+    }
+    .filter-pill:hover, .filter-pill.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* Quick Action Chips */
+    .chip-btn {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 11px;
+      border-radius: 8px;
+      transition: all .15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .chip-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* Views Animation */
+    .module-view {
+      display: none;
+      animation: fadeSlide .25s ease-out;
+    }
+    .module-view.active { display: block; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tool-panel { padding: 24px; }
+    .form-label { font-size: 12.5px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .form-control, .form-select {
+      border-color: var(--border);
+      background-color: var(--surface-2);
+      color: var(--text);
+      font-size: 13.5px;
+      min-height: 42px;
+      border-radius: 10px;
+      transition: all .18s ease;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+      background-color: var(--surface);
+      color: var(--text);
+    }
+    textarea.form-control { min-height: 105px; }
+
+    .btn-primary {
+      --bs-btn-bg: var(--accent);
+      --bs-btn-border-color: var(--accent);
+      --bs-btn-hover-bg: var(--accent-hover);
+      --bs-btn-hover-border-color: var(--accent-hover);
+      --bs-btn-active-bg: var(--accent-hover);
+      --bs-btn-active-border-color: var(--accent-hover);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+    .btn-outline-secondary {
+      font-size: 13px;
+      font-weight: 500;
+      border-color: var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      background: var(--surface-2);
+    }
+    .btn-outline-secondary:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .notice {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      padding: 13px 16px;
+      border-radius: 11px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+    .result-box {
+      display: none;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 13.5px;
+    }
+    .result-box.show { display: block; }
+    .status-line { font-size: 12.5px; color: var(--muted); min-height: 20px; margin-top: 8px; font-weight: 500; }
+
+    /* Dropzone for Audio & Images */
+    .drop-zone {
+      border: 2px dashed var(--border);
+      background: var(--surface-2);
+      border-radius: 14px;
+      padding: 26px 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* Audio Visualizer Canvas */
+    .visualizer-canvas {
+      width: 100%;
+      height: 110px;
+      background: #0b0f19;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+
+    /* Weather & Movies */
+    .weather-big { font-size: 42px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+    .forecast-day {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 10px;
+      text-align: center;
+    }
+    .movie-card {
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .movie-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .movie-card img {
+      width: 100%;
+      height: 235px;
+      object-fit: cover;
+      border-radius: 11px;
+      background: var(--surface-2);
+    }
+    .movie-card .movie-placeholder {
+      height: 235px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 36px;
+    }
+
+    /* Interactive Solar System */
+    .solar-stage {
+      height: 460px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background:
+        radial-gradient(1px 1px at 15% 25%, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 35% 75%, #fff, transparent),
+        radial-gradient(1px 1px at 65% 15%, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 80% 60%, #fff, transparent),
+        radial-gradient(1px 1px at 25% 85%, #fff, transparent),
+        radial-gradient(ellipse at center, #1b2442 0%, #090d1a 78%);
+      display: grid;
+      place-items: center;
+    }
+    .solar-system {
+      position: relative;
+      width: min(80vw, 430px);
+      height: min(80vw, 430px);
+      --speed-factor: 1;
+    }
+    .sun {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      background: radial-gradient(circle, #fff3b0 0%, #ffb703 60%, #fb8500 100%);
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 30px #ffb703, 0 0 65px rgba(251, 133, 0, 0.55);
+      z-index: 3;
+      cursor: pointer;
+    }
+    .orbit {
+      position: absolute;
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      animation: orbit-spin linear infinite;
+      pointer-events: none;
+    }
+    .orbit-1 { width: 76px; height: 76px; animation-duration: calc(5s / var(--speed-factor)); }
+    .orbit-2 { width: 112px; height: 112px; animation-duration: calc(8s / var(--speed-factor)); }
+    .orbit-3 { width: 152px; height: 152px; animation-duration: calc(12s / var(--speed-factor)); }
+    .orbit-4 { width: 194px; height: 194px; animation-duration: calc(17s / var(--speed-factor)); }
+    .orbit-5 { width: 244px; height: 244px; animation-duration: calc(26s / var(--speed-factor)); }
+    .orbit-6 { width: 298px; height: 298px; animation-duration: calc(36s / var(--speed-factor)); }
+    .orbit-7 { width: 350px; height: 350px; animation-duration: calc(48s / var(--speed-factor)); }
+    .orbit-8 { width: 402px; height: 402px; animation-duration: calc(60s / var(--speed-factor)); }
+
+    .planet {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translate(-50%, -50%);
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #94a3b8;
+      box-shadow: 0 0 10px currentColor;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: transform .18s ease;
+    }
+    .planet:hover { transform: translate(-50%, -50%) scale(1.45); }
+    .orbit-1 .planet { background: #cbd5e1; color: #cbd5e1; }
+    .orbit-2 .planet { width: 12px; height: 12px; background: #f59e0b; color: #f59e0b; }
+    .orbit-3 .planet { width: 13px; height: 13px; background: #38bdf8; color: #38bdf8; }
+    .orbit-4 .planet { width: 11px; height: 11px; background: #ef4444; color: #ef4444; }
+    .orbit-5 .planet { width: 21px; height: 21px; background: #d97706; color: #d97706; }
+    .orbit-6 .planet { width: 18px; height: 18px; background: #eab308; color: #eab308; box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.35); }
+    .orbit-7 .planet { width: 15px; height: 15px; background: #67e8f9; color: #67e8f9; }
+    .orbit-8 .planet { width: 14px; height: 14px; background: #3b82f6; color: #3b82f6; }
+
+    @keyframes orbit-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+    .chart-wrap { height: 350px; position: relative; }
+    .footer {
+      border-top: 1px solid var(--border);
+      margin-top: 36px;
+      padding: 20px 0 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .mobile-overlay { display: none; }
+    .archive-results, .archive-playlist { display: grid; gap: 10px; }
+    .archive-results { max-height: 520px; overflow-y: auto; }
+    .archive-result, .archive-track {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+    .archive-result-copy, .archive-track-copy { min-width: 0; }
+    .archive-result-title, .archive-track-title { color: var(--text); font-weight: 700; overflow-wrap: anywhere; }
+    .archive-result-meta, .archive-track-meta { color: var(--muted); font-size: 13px; }
+    .archive-player {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+    }
+    .archive-player-range { accent-color: var(--accent); }
+    .archive-playlist { max-height: 430px; overflow-y: auto; }
+    .archive-track.is-current { border-color: var(--accent); background: var(--accent-soft); }
+    .archive-player-controls { display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .archive-volume { width: 120px; accent-color: var(--accent); }
+    @media (max-width: 575px) {
+      .archive-result, .archive-track { align-items: flex-start; }
+      .archive-result { flex-direction: column; }
+      .archive-track { gap: 8px; }
+      .archive-player-controls { gap: 6px; }
+      .archive-volume { width: 82px; }
+    }
+    .tree-area { padding: 18px; min-height: 320px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); }
+    .tree-area .jstree-default { color: var(--text); }
+    .tree-area .jstree-default .jstree-anchor { color: var(--text); border-radius: 6px; padding: 2px 6px; }
+    [data-theme="dark"] .tree-area .jstree-default .jstree-clicked { background: #312e81; color: #fff; box-shadow: none; }
+    [data-theme="dark"] .tree-area .jstree-default .jstree-hovered { background: #1e293b; color: #fff; box-shadow: none; }
+
+    @media (max-width: 991px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main-area { margin-left: 0; }
+      .mobile-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(9, 13, 22, 0.65);
+        backdrop-filter: blur(3px);
+        z-index: 1030;
+      }
+      .topbar-search { width: 190px; }
+    }
+    @media (max-width: 575px) {
+      .topbar { height: 68px; padding: 0 16px; }
+      .topbar-search { display: none; }
+      .content { padding: 22px 16px 18px; }
+      .tool-panel { padding: 18px; }
+      .solar-stage { height: 350px; }
+      .solar-system { transform: scale(.78); }
+      .panel-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" aria-label="Menú principal">
+    <a class="brand" href="#" data-page="dashboard">
+      <span class="brand-mark"><i class="bi bi-grid-1x2-fill"></i></span>
+      <span>APIS</span>
+      <span class="brand-badge">PRO</span>
+    </a>
+
+    <div class="nav-label">Espacio de trabajo</div>
+    <nav class="side-nav" id="sidebarNav">
+      <a class="side-link active" href="#" data-page="dashboard"><i class="bi bi-house-door"></i>Panel principal</a>
+      <a class="side-link" href="#" data-page="email"><i class="bi bi-envelope"></i>Servicio de correo</a>
+      <a class="side-link" href="#" data-page="calendar"><i class="bi bi-calendar3"></i>Google Calendar</a>
+      <a class="side-link" href="#" data-page="audio"><i class="bi bi-soundwave"></i>Reproductor de audio</a>
+      <a class="side-link" href="#" data-page="archive-audio"><i class="bi bi-music-note-beamed"></i>Internet Archive Audio</a>
+      <a class="side-link" href="#" data-page="images"><i class="bi bi-image"></i>Subida de imágenes</a>
+      <a class="side-link" href="#" data-page="location"><i class="bi bi-geo-alt"></i>Geolocalización</a>
+      <a class="side-link" href="#" data-page="weather"><i class="bi bi-cloud-sun"></i>Clima</a>
+      <a class="side-link" href="#" data-page="currency"><i class="bi bi-currency-exchange"></i>Cambio de moneda</a>
+      <a class="side-link" href="#" data-page="movies"><i class="bi bi-film"></i>Películas y series</a>
+      <a class="side-link" href="#" data-page="solar"><i class="bi bi-globe-americas"></i>Sistema solar</a>
+      <a class="side-link" href="#" data-page="charts"><i class="bi bi-bar-chart-line"></i>Gráficos y estadísticas</a>
+      <a class="side-link" href="#" data-page="tree"><i class="bi bi-diagram-3"></i>Árbol de módulos</a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <strong class="d-block text-white mb-1">APIS Hub v2.5</strong>
+      <div><span class="sidebar-status-dot"></span>12 módulos activos</div>
+    </div>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <main class="main-area">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="icon-button d-lg-none" id="menuToggle" aria-label="Abrir menú"><i class="bi bi-list fs-5"></i></button>
+        <div>
+          <div class="breadcrumb-small">
+            <span class="breadcrumb-brand">APIS</span>
+            <span>/</span>
+            <span id="crumb">Panel principal</span>
+          </div>
+          <div class="topbar-title" id="topTitle">Panel principal</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Quick Jump Input -->
+        <div class="topbar-search">
+          <i class="bi bi-search search-icon"></i>
+          <input type="text" id="quickJumpInput" placeholder="Ir a módulo..." autocomplete="off">
+          <span class="kbd-badge">Ctrl K</span>
+          <div class="quick-dropdown" id="quickJumpDropdown"></div>
+        </div>
+
+        <button class="icon-button" id="themeToggle" aria-label="Cambiar tema" title="Cambiar modo claro/oscuro">
+          <i class="bi bi-moon-stars"></i>
+        </button>
+        <div class="avatar" title="APIS Plataforma">AP</div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- 1. DASHBOARD -->
+      <section class="module-view active" id="view-dashboard">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-lightning-charge-fill"></i> Ecosistema Digital</div>
+            <h1>Bienvenido a APIS</h1>
+            <p>Tu centro de control con 12 servicios en la nube, utilidades multimedia y visualización de datos.</p>
+          </div>
+          <span class="badge rounded-pill text-bg-light border px-3 py-2 shadow-sm" id="todayBadge"></span>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-sm-6 col-xl-4">
+            <div class="panel stat-card">
+              <div class="d-flex justify-content-between align-items-start">
+                <span class="stat-label">Módulos interactivos</span>
+                <span class="stat-icon"><i class="bi bi-grid-1x2"></i></span>
+              </div>
+              <div class="stat-value">12</div>
+              <div class="stat-caption">Herramientas listas para explorar en tiempo real</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-4">
+            <div class="panel stat-card">
+              <div class="d-flex justify-content-between align-items-start">
+                <span class="stat-label">APIs e Integraciones</span>
+                <span class="stat-icon"><i class="bi bi-cloud-check"></i></span>
+              </div>
+              <div class="stat-value">8+</div>
+              <div class="stat-caption">Open-Meteo, Frankfurter, TVmaze, Google, EmailJS, ImgBB</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-12 col-xl-4">
+            <div class="panel stat-card">
+              <div class="d-flex justify-content-between align-items-start">
+                <span class="stat-label">Plataforma</span>
+                <span class="stat-icon"><i class="bi bi-stars"></i></span>
+              </div>
+              <div class="stat-value">APIS Studio</div>
+              <div class="stat-caption">Interfaz rápida, adaptable y con soporte modo oscuro</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel p-4 mb-4">
+          <div class="panel-header flex-wrap">
+            <div>
+              <h2 class="panel-title">Explora tus módulos</h2>
+              <p class="panel-subtitle">Filtra por categoría o busca directamente una herramienta para comenzar.</p>
+            </div>
+            <div class="d-flex gap-2 align-items-center flex-wrap" id="categoryFilterBar">
+              <button class="filter-pill active" data-cat="all">Todos (12)</button>
+              <button class="filter-pill" data-cat="Productividad">Productividad</button>
+              <button class="filter-pill" data-cat="Multimedia">Multimedia</button>
+              <button class="filter-pill" data-cat="Datos & APIs">Datos & APIs</button>
+              <button class="filter-pill" data-cat="Visualización">Visualización</button>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="input-group">
+              <span class="input-group-text bg-transparent border-end-0 text-secondary"><i class="bi bi-search"></i></span>
+              <input type="search" class="form-control border-start-0" id="dashboardSearch" placeholder="Buscar módulo por nombre o descripción (ej. clima, moneda, gráficos, audio)...">
+            </div>
+          </div>
+
+          <div class="row g-3" id="moduleCards"></div>
+        </div>
+      </section>
+
+      <!-- 2. SERVICIO DE CORREO -->
+      <section class="module-view" id="view-email">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-envelope-paper"></i> Comunicaciones</div>
+            <h1>Servicio de correo</h1>
+            <p>Envía correos electrónicos transaccionales en tiempo real mediante tu cuenta de EmailJS.</p>
+          </div>
+          <button class="btn btn-outline-secondary btn-sm" id="fillDemoEmail" type="button">
+            <i class="bi bi-magic me-1"></i>Rellenar mensaje de prueba
+          </button>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <div class="panel tool-panel h-100">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Configuración y redacción</h2>
+                  <p class="panel-subtitle">Conecta tus credenciales de EmailJS y redacta el mensaje.</p>
+                </div>
+                <i class="bi bi-envelope-at fs-4 text-primary"></i>
+              </div>
+              <div class="notice mb-3">
+                Obtén tu <strong>Service ID</strong>, <strong>Template ID</strong> y <strong>Public Key</strong> gratis en <a href="https://www.emailjs.com/" target="_blank" rel="noopener">emailjs.com</a>.
+              </div>
+              <form id="emailForm">
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <label class="form-label" for="emailService">Service ID</label>
+                    <input class="form-control" id="emailService" required placeholder="service_xxxxx">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label" for="emailTemplate">Template ID</label>
+                    <input class="form-control" id="emailTemplate" required placeholder="template_xxxxx">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label" for="emailPublic">Public Key</label>
+                    <input class="form-control" id="emailPublic" required placeholder="Tu clave pública">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label" for="emailTo">Correo destinatario</label>
+                    <input class="form-control" id="emailTo" type="email" required placeholder="cliente@ejemplo.com">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label" for="emailSubject">Asunto</label>
+                    <input class="form-control" id="emailSubject" required placeholder="Notificación desde APIS">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label" for="emailMessage">Mensaje</label>
+                    <textarea class="form-control" id="emailMessage" required placeholder="Escribe el contenido de tu correo..."></textarea>
+                  </div>
+                  <div class="col-12 d-flex align-items-center gap-3 flex-wrap">
+                    <button class="btn btn-primary" type="submit" id="emailSend">
+                      <i class="bi bi-send me-2"></i>Enviar correo
+                    </button>
+                    <span class="status-line" id="emailStatus"></span>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="panel tool-panel h-100">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Vista previa en vivo</h2>
+                  <p class="panel-subtitle">Así se verá la estructura de tu mensaje antes de enviarse.</p>
+                </div>
+                <span class="badge text-bg-primary">Live Preview</span>
+              </div>
+              <div class="p-3 rounded-3 border" style="background: var(--surface-2);">
+                <div class="small text-secondary mb-1"><strong>Para:</strong> <span id="previewEmailTo">destinatario@ejemplo.com</span></div>
+                <div class="small text-secondary mb-2 pb-2 border-bottom"><strong>Asunto:</strong> <span id="previewEmailSubject" class="text-body fw-semibold">Sin asunto</span></div>
+                <div class="small" id="previewEmailBody" style="white-space: pre-wrap; min-height: 140px; color: var(--text);">Escribe un mensaje a la izquierda para previsualizarlo aquí...</div>
+                <div class="mt-3 pt-2 border-top small text-secondary d-flex justify-content-between">
+                  <span>Enviado con <strong>APIS Mailer</strong></span>
+                  <span>EmailJS API</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. GOOGLE CALENDAR -->
+      <section class="module-view" id="view-calendar">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-calendar-event"></i> Organización</div>
+            <h1>Google Calendar</h1>
+            <p>Sincroniza tu agenda, consulta próximos compromisos y registra eventos en tu cuenta de Google.</p>
+          </div>
+        </div>
+
+        <div class="panel tool-panel mb-4">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Conectar cuenta con OAuth 2.0</h2>
+              <p class="panel-subtitle">Autoriza a APIS para leer y crear eventos en tu calendario principal.</p>
+            </div>
+            <i class="bi bi-calendar-check fs-4 text-primary"></i>
+          </div>
+          <div class="notice mb-3">
+            Configura un <strong>OAuth Client ID</strong> (Aplicación web) en Google Cloud Console, habilita <em>Google Calendar API</em> y agrega el origen actual.
+          </div>
+          <div class="row g-3 align-items-end">
+            <div class="col-md-8">
+              <label class="form-label" for="googleClient">OAuth Client ID</label>
+              <input class="form-control" id="googleClient" placeholder="xxxxx-xxxxx.apps.googleusercontent.com">
+            </div>
+            <div class="col-md-4 d-flex gap-2">
+              <button class="btn btn-primary flex-grow-1" id="googleConnect" type="button"><i class="bi bi-google me-2"></i>Conectar</button>
+              <button class="btn btn-outline-secondary" id="googleSignout" type="button" disabled>Salir</button>
+            </div>
+          </div>
+          <div class="status-line mt-2" id="calendarStatus"></div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-5">
+            <div class="panel tool-panel h-100">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Crear nuevo evento</h2>
+                  <p class="panel-subtitle">Se añadirá directamente a tu calendario primario.</p>
+                </div>
+              </div>
+              <form id="eventForm">
+                <div class="mb-3">
+                  <label class="form-label" for="eventTitle">Título del evento</label>
+                  <input class="form-control" id="eventTitle" required placeholder="Ej. Revisión de sprint APIS">
+                </div>
+                <div class="row g-2 mb-3">
+                  <div class="col-sm-6">
+                    <label class="form-label" for="eventStart">Inicio</label>
+                    <input class="form-control" id="eventStart" type="datetime-local" required>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="form-label" for="eventEnd">Fin</label>
+                    <input class="form-control" id="eventEnd" type="datetime-local" required>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="eventDescription">Descripción / Notas</label>
+                  <textarea class="form-control" id="eventDescription" placeholder="Enlaces, agenda o detalles adicionales"></textarea>
+                </div>
+                <button class="btn btn-primary w-100" type="submit"><i class="bi bi-plus-circle me-2"></i>Guardar en Google Calendar</button>
+                <div class="status-line" id="eventStatus"></div>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="panel tool-panel h-100">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Próximos eventos</h2>
+                  <p class="panel-subtitle">Agenda sincronizada en tiempo real.</p>
+                </div>
+                <button class="btn btn-outline-secondary btn-sm" type="button" id="refreshEvents">
+                  <i class="bi bi-arrow-clockwise me-1"></i>Actualizar
+                </button>
+              </div>
+              <div id="eventsList" class="result-box show">Conecta tu cuenta de Google para listar tus próximos eventos.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. REPRODUCTOR DE AUDIO -->
+      <section class="module-view" id="view-audio">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-soundwave"></i> Multimedia</div>
+            <h1>Reproductor de audio y Analizador</h1>
+            <p>Reproduce pistas locales con visualizador de frecuencias en tiempo real y control de velocidad.</p>
+          </div>
+        </div>
+
+        <div class="panel tool-panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Estudio de reproducción local</h2>
+              <p class="panel-subtitle">Arrastra o selecciona archivos MP3, WAV, OGG o M4A desde tu dispositivo.</p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <label class="small text-secondary fw-semibold" for="audioSpeed">Velocidad:</label>
+              <select id="audioSpeed" class="form-select form-select-sm" style="width: auto; min-height: 34px;">
+                <option value="0.75">0.75x</option>
+                <option value="1" selected>1.0x Normal</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="audioFiles" class="drop-zone w-100 mb-3 d-block">
+            <i class="bi bi-music-note-list fs-2 text-primary d-block mb-2"></i>
+            <div class="fw-bold">Haz clic para elegir pistas o arrástralas aquí</div>
+            <div class="small text-secondary mt-1">Reproducción 100% privada en tu navegador sin subir archivos a ningún servidor</div>
+            <input class="d-none" type="file" id="audioFiles" accept="audio/*" multiple>
+          </label>
+
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="small fw-semibold text-secondary"><i class="bi bi-activity me-1"></i>Espectro de frecuencias en vivo</span>
+              <span class="small text-secondary" id="nowPlayingLabel">Sin pista en reproducción</span>
+            </div>
+            <canvas id="audioVisualizer" class="visualizer-canvas" width="800" height="110"></canvas>
+          </div>
+
+          <div id="audioList" class="d-grid gap-3"></div>
+        </div>
+      </section>
+
+      <!-- 5. INTERNET ARCHIVE AUDIO -->
+      <section class="module-view" id="view-archive-audio">
+        <div class="page-heading">
+          <div>
+          <div class="eyebrow"><i class="bi bi-music-note-beamed"></i> Audio público</div>
+          <h1>Internet Archive Audio</h1>
+          <p>Busca, reproduce y organiza música y grabaciones de audio disponibles públicamente en Internet Archive.</p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-7">
+          <div class="panel tool-panel h-100">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Buscar música y audios</h2>
+              <p class="panel-subtitle">Resultados públicos de Internet Archive, sin cuenta ni clave de API.</p>
+            </div>
+            <i class="bi bi-archive fs-4 text-primary"></i>
+          </div>
+          <form id="archiveSearchForm" class="row g-3 align-items-end">
+            <div class="col-md-8">
+              <label class="form-label" for="archiveSearchInput">Nombre, título o artista</label>
+              <input class="form-control" id="archiveSearchInput" type="search" required maxlength="120" placeholder="Ej. jazz, Beethoven, música ambiental">
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-primary w-100" id="archiveSearchButton" type="submit"><i class="bi bi-search me-2"></i>Buscar</button>
+            </div>
+          </form>
+          <div class="status-line mt-2" id="archiveSearchStatus" role="status" aria-live="polite"></div>
+          <div class="archive-results mt-3" id="archiveResults" aria-live="polite">
+            <div class="notice">Busca por título o artista para descubrir audios públicos.</div>
+          </div>
+          </div>
+          </div>
+          <div class="col-lg-5">
+          <div class="panel tool-panel h-100">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">Mi lista de reproducción</h2>
+                <p class="panel-subtitle">Se conserva en este navegador para volver a escucharla.</p>
+              </div>
+              <button class="btn btn-outline-secondary btn-sm" type="button" id="archiveClearPlaylist"><i class="bi bi-trash3 me-1"></i>Vaciar</button>
+            </div>
+            <div class="archive-playlist" id="archivePlaylist" aria-live="polite"></div>
+          </div>
+          </div>
+          <div class="col-12">
+          <div class="panel tool-panel">
+            <div class="archive-player">
+              <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+                <div class="min-w-0">
+                  <div class="small text-secondary mb-1">REPRODUCIENDO</div>
+                  <div class="archive-result-title fs-5" id="archiveNowTitle">Selecciona un audio</div>
+                  <div class="archive-result-meta" id="archiveNowArtist">Internet Archive</div>
+                </div>
+                <div style="width: min(100%, 190px);">
+                  <label class="form-label small mb-1" for="archiveFormat">Formato de audio</label>
+                  <select class="form-select form-select-sm" id="archiveFormat" disabled aria-label="Formato del audio"></select>
+                </div>
+              </div>
+              <audio id="archiveAudio" preload="metadata"></audio>
+              <input class="form-range archive-player-range mb-1" id="archiveProgress" type="range" min="0" max="0" value="0" step="0.1" aria-label="Progreso de reproducción" disabled>
+              <div class="d-flex justify-content-between small text-secondary mb-3">
+                <span id="archiveCurrentTime">0:00</span>
+                <span id="archiveDuration">--:--</span>
+              </div>
+              <div class="archive-player-controls">
+                <button class="btn btn-outline-secondary" type="button" id="archivePrevious" aria-label="Pista anterior" title="Anterior" disabled><i class="bi bi-skip-backward-fill"></i></button>
+                <button class="btn btn-primary rounded-circle" type="button" id="archivePlayPause" aria-label="Reproducir" title="Reproducir" disabled><i class="bi bi-play-fill"></i></button>
+                <button class="btn btn-outline-secondary" type="button" id="archiveNext" aria-label="Pista siguiente" title="Siguiente" disabled><i class="bi bi-skip-forward-fill"></i></button>
+                <label class="small text-secondary ms-2" for="archiveVolume"><i class="bi bi-volume-up"></i><span class="visually-hidden">Volumen</span></label>
+                <input class="form-range archive-volume" id="archiveVolume" type="range" min="0" max="1" value="0.8" step="0.01" aria-label="Volumen">
+              </div>
+              <div class="status-line mt-3 text-center" id="archivePlayerStatus" role="status" aria-live="polite"></div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. SUBIDA DE IMÁGENES -->
+      <section class="module-view" id="view-images">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-cloud-arrow-up"></i> Alojamiento CDN</div>
+            <h1>Subida de imágenes</h1>
+            <p>Aloja imágenes en la nube con ImgBB y obtén enlaces directos listos para compartir.</p>
+          </div>
+        </div>
+
+        <div class="panel tool-panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Publicar imagen con ImgBB API</h2>
+              <p class="panel-subtitle">Previsualiza tu archivo localmente antes de subirlo al servidor.</p>
+            </div>
+            <i class="bi bi-image fs-4 text-primary"></i>
+          </div>
+
+          <div class="notice mb-4">
+            Consigue tu API Key gratuita en <a href="https://api.imgbb.com/" target="_blank" rel="noopener">api.imgbb.com</a>. La clave se usa únicamente en tu navegador.
+          </div>
+
+          <form id="imageForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="imgbbKey">API Key de ImgBB</label>
+                <input class="form-control" id="imgbbKey" placeholder="API Key configurada">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="imageFile">Seleccionar archivo de imagen</label>
+                <input class="form-control" id="imageFile" type="file" accept="image/*" required>
+              </div>
+              <div class="col-12" id="localImagePreviewBox" style="display:none;">
+                <div class="p-3 rounded-3 border d-flex align-items-center gap-3 flex-wrap" style="background: var(--surface-2);">
+                  <img id="localImagePreview" src="" alt="Previsualización local" style="width: 84px; height: 84px; object-fit: cover; border-radius: 10px;">
+                  <div>
+                    <div class="fw-semibold small" id="localImageName">archivo.png</div>
+                    <div class="small text-secondary" id="localImageMeta">0 KB</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary" type="submit" id="imageUpload">
+                  <i class="bi bi-cloud-arrow-up me-2"></i>Subir imagen a ImgBB
+                </button>
+                <span class="status-line d-inline-block ms-2" id="imageStatus"></span>
+              </div>
+            </div>
+          </form>
+          <div id="imageResult" class="result-box mt-4"></div>
+        </div>
+      </section>
+
+      <!-- 7. GEOLOCALIZACIÓN -->
+      <section class="module-view" id="view-location">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-compass"></i> Mapas y Coordenadas</div>
+            <h1>Geolocalización</h1>
+            <p>Obtén tu posición mediante el GPS del navegador o explora coordenadas de ciudades del mundo.</p>
+          </div>
+        </div>
+
+        <div class="panel tool-panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Visor cartográfico OpenStreetMap</h2>
+              <p class="panel-subtitle">Usa tu GPS en vivo o explora ubicaciones predefinidas con un clic.</p>
+            </div>
+            <i class="bi bi-geo-alt fs-4 text-primary"></i>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+            <button class="btn btn-primary" id="locateButton" type="button">
+              <i class="bi bi-crosshair me-2"></i>Detectar mi ubicación GPS
+            </button>
+            <button class="btn btn-outline-secondary" id="copyCoordsBtn" type="button" disabled>
+              <i class="bi bi-clipboard me-1"></i>Copiar coordenadas
+            </button>
+            <span class="small text-secondary ms-md-2">Explorar:</span>
+            <button type="button" class="chip-btn geo-preset" data-lat="-12.046374" data-lon="-77.042793" data-label="Lima, Perú">Lima</button>
+            <button type="button" class="chip-btn geo-preset" data-lat="-11.2522" data-lon="-74.6386" data-label="Satipo, Perú">Satipo</button>
+            <button type="button" class="chip-btn geo-preset" data-lat="-13.53195" data-lon="-71.96746" data-label="Cusco, Perú">Cusco</button>
+            <button type="button" class="chip-btn geo-preset" data-lat="40.416775" data-lon="-3.70379" data-label="Madrid, España">Madrid</button>
+            <button type="button" class="chip-btn geo-preset" data-lat="35.6762" data-lon="139.6503" data-label="Tokio, Japón">Tokio</button>
+          </div>
+
+          <div class="status-line" id="locationStatus"></div>
+          <div id="locationResult" class="result-box mt-3"></div>
+          <div id="mapFrame" class="mt-3"></div>
+        </div>
+      </section>
+
+      <!-- 8. CLIMA -->
+      <section class="module-view" id="view-weather">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-cloud-sun"></i> Meteorología en vivo</div>
+            <h1>Clima y Pronóstico</h1>
+            <p>Consulta temperatura, humedad, viento y pronóstico extendido de 5 días con Open-Meteo.</p>
+          </div>
+        </div>
+
+        <div class="panel tool-panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Estación meteorológica global</h2>
+              <p class="panel-subtitle">Busca cualquier ciudad o elige un acceso rápido.</p>
+            </div>
+            <i class="bi bi-thermometer-half fs-4 text-primary"></i>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
+            <span class="small text-secondary fw-semibold">Ciudades rápidas:</span>
+            <button type="button" class="chip-btn weather-preset" data-city="Lima">Lima</button>
+            <button type="button" class="chip-btn weather-preset" data-city="Satipo">Satipo</button>
+            <button type="button" class="chip-btn weather-preset" data-city="Cusco">Cusco</button>
+            <button type="button" class="chip-btn weather-preset" data-city="Arequipa">Arequipa</button>
+            <button type="button" class="chip-btn weather-preset" data-city="Buenos Aires">Buenos Aires</button>
+            <button type="button" class="chip-btn weather-preset" data-city="Madrid">Madrid</button>
+          </div>
+
+          <form id="weatherForm" class="row g-3 align-items-end">
+            <div class="col-md-9">
+              <label class="form-label" for="weatherCity">Ciudad o localidad</label>
+              <input class="form-control" id="weatherCity" required placeholder="Ej. Lima, Perú">
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-primary w-100" type="submit"><i class="bi bi-search me-2"></i>Consultar clima</button>
+            </div>
+          </form>
+          <div class="status-line" id="weatherStatus"></div>
+          <div class="result-box mt-3" id="weatherResult"></div>
+        </div>
+      </section>
+
+      <!-- 9. CAMBIO DE MONEDA -->
+      <section class="module-view" id="view-currency">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-currency-exchange"></i> Finanzas Internacionales</div>
+            <h1>Cambio de moneda</h1>
+            <p>Calculadora de divisas en tiempo real con tasas de Frankfurter y Open Exchange Rates.</p>
+          </div>
+        </div>
+
+        <div class="panel tool-panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Conversor de divisas</h2>
+              <p class="panel-subtitle">Intercambia monedas al instante y compara tasas de referencia.</p>
+            </div>
+            <i class="bi bi-cash-coin fs-4 text-primary"></i>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
+            <span class="small text-secondary fw-semibold">Importe rápido:</span>
+            <button type="button" class="chip-btn amount-preset" data-val="10">10</button>
+            <button type="button" class="chip-btn amount-preset" data-val="50">50</button>
+            <button type="button" class="chip-btn amount-preset" data-val="100">100</button>
+            <button type="button" class="chip-btn amount-preset" data-val="500">500</button>
+            <button type="button" class="chip-btn amount-preset" data-val="1000">1,000</button>
+          </div>
+
+          <form id="currencyForm">
+            <div class="row g-3 align-items-end">
+              <div class="col-sm-6 col-lg-3">
+                <label class="form-label" for="currencyAmount">Cantidad</label>
+                <input class="form-control" id="currencyAmount" type="number" min="0.000001" step="any" value="100" required>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <label class="form-label" for="currencyFrom">De</label>
+                <select class="form-select currency-select" id="currencyFrom" required></select>
+              </div>
+              <div class="col-sm-2 col-lg-1 d-grid">
+                <button class="btn btn-outline-secondary" type="button" id="swapCurrencies" title="Invertir monedas">
+                  <i class="bi bi-arrow-left-right"></i>
+                </button>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <label class="form-label" for="currencyTo">A</label>
+                <select class="form-select currency-select" id="currencyTo" required></select>
+              </div>
+              <div class="col-sm-4 col-lg-2">
+                <button class="btn btn-primary w-100" type="submit">Convertir</button>
+              </div>
+            </div>
+          </form>
+          <div class="status-line" id="currencyStatus"></div>
+          <div id="currencyResult" class="result-box mt-3"></div>
+        </div>
+      </section>
+
+      <!-- 10. PELÍCULAS Y SERIES -->
+      <section class="module-view" id="view-movies">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-film"></i> Entretenimiento</div>
+            <h1>Películas y series</h1>
+            <p>Explora el catálogo global de televisión y streaming mediante la API de TVmaze.</p>
+          </div>
+        </div>
+
+        <div class="panel tool-panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Buscador de títulos en TVmaze</h2>
+              <p class="panel-subtitle">Consulta póster, puntuación, año de estreno y sinopsis.</p>
+            </div>
+            <i class="bi bi-tv fs-4 text-primary"></i>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
+            <span class="small text-secondary fw-semibold">Tendencias:</span>
+            <button type="button" class="chip-btn movie-preset" data-q="Stranger Things">Stranger Things</button>
+            <button type="button" class="chip-btn movie-preset" data-q="Breaking Bad">Breaking Bad</button>
+            <button type="button" class="chip-btn movie-preset" data-q="The Last of Us">The Last of Us</button>
+            <button type="button" class="chip-btn movie-preset" data-q="Arcane">Arcane</button>
+            <button type="button" class="chip-btn movie-preset" data-q="Dark">Dark</button>
+          </div>
+
+          <form id="movieForm" class="row g-3 align-items-end">
+            <div class="col-md-9">
+              <label class="form-label" for="movieQuery">Título de la serie o programa</label>
+              <input class="form-control" id="movieQuery" required placeholder="Ej. Severance, The Bear, Friends...">
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-primary w-100" type="submit"><i class="bi bi-search me-2"></i>Buscar títulos</button>
+            </div>
+          </form>
+          <div class="status-line" id="movieStatus"></div>
+          <div class="row g-3 mt-1" id="movieResults"></div>
+        </div>
+      </section>
+
+      <!-- 11. SISTEMA SOLAR -->
+      <section class="module-view" id="view-solar">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-globe-americas"></i> Astronomía Interactiva</div>
+            <h1>Sistema solar</h1>
+            <p>Simulación orbital interactiva con control de velocidad e inspector planetario.</p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="panel tool-panel h-100">
+              <div class="panel-header flex-wrap">
+                <div>
+                  <h2 class="panel-title">Simulador orbital APIS</h2>
+                  <p class="panel-subtitle">Haz clic sobre el Sol o cualquier planeta para inspeccionar sus datos.</p>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <label for="orbitSpeed" class="small text-secondary fw-semibold">Velocidad:</label>
+                    <input type="range" id="orbitSpeed" min="0.25" max="3" step="0.25" value="1" style="width: 90px;">
+                    <span class="badge text-bg-secondary" id="orbitSpeedBadge">1x</span>
+                  </div>
+                  <button class="btn btn-outline-secondary btn-sm" id="orbitToggle" type="button">
+                    <i class="bi bi-pause-fill me-1"></i>Pausar
+                  </button>
+                </div>
+              </div>
+
+              <div class="solar-stage">
+                <div class="solar-system" id="solarSystem">
+                  <div class="sun" data-planet="Sol" title="Sol"></div>
+                  <div class="orbit orbit-1"><span class="planet" data-planet="Mercurio" title="Mercurio"></span></div>
+                  <div class="orbit orbit-2"><span class="planet" data-planet="Venus" title="Venus"></span></div>
+                  <div class="orbit orbit-3"><span class="planet" data-planet="Tierra" title="Tierra"></span></div>
+                  <div class="orbit orbit-4"><span class="planet" data-planet="Marte" title="Marte"></span></div>
+                  <div class="orbit orbit-5"><span class="planet" data-planet="Júpiter" title="Júpiter"></span></div>
+                  <div class="orbit orbit-6"><span class="planet" data-planet="Saturno" title="Saturno"></span></div>
+                  <div class="orbit orbit-7"><span class="planet" data-planet="Urano" title="Urano"></span></div>
+                  <div class="orbit orbit-8"><span class="planet" data-planet="Neptuno" title="Neptuno"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="panel tool-panel h-100">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Ficha astronómica</h2>
+                  <p class="panel-subtitle">Selecciona un astro para ver sus métricas.</p>
+                </div>
+                <i class="bi bi-stars fs-4 text-primary"></i>
+              </div>
+
+              <div class="d-flex flex-wrap gap-1 mb-3" id="planetButtons"></div>
+
+              <div class="p-3 rounded-3 border" style="background: var(--surface-2);" id="planetInspector">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. GRÁFICOS Y ESTADÍSTICAS -->
+      <section class="module-view" id="view-charts">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-bar-chart-line"></i> Analítica de Datos</div>
+            <h1>Gráficos y estadísticas</h1>
+            <p>Genera visualizaciones interactivas con Chart.js y expórtalas como imagen PNG.</p>
+          </div>
+          <button class="btn btn-outline-secondary btn-sm" id="downloadChartBtn" type="button">
+            <i class="bi bi-download me-1"></i>Descargar PNG
+          </button>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="panel tool-panel h-100">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Datos del gráfico</h2>
+                  <p class="panel-subtitle">Personaliza tipo, plantilla y valores.</p>
+                </div>
+              </div>
+
+              <div class="d-flex flex-wrap gap-1 mb-3">
+                <button type="button" class="chip-btn chart-preset" data-preset="ventas">Ventas 2026</button>
+                <button type="button" class="chip-btn chart-preset" data-preset="lenguajes">Lenguajes</button>
+                <button type="button" class="chip-btn chart-preset" data-preset="rendimiento">Tráfico Web</button>
+              </div>
+
+              <label class="form-label" for="chartType">Tipo de visualización</label>
+              <select class="form-select mb-3" id="chartType">
+                <option value="bar">Gráfico de Barras</option>
+                <option value="line">Gráfico de Líneas (Área)</option>
+                <option value="doughnut">Gráfico de Dona</option>
+                <option value="polarArea">Área Polar</option>
+                <option value="radar">Radar Comparativo</option>
+              </select>
+
+              <label class="form-label" for="chartData">Etiquetas y valores</label>
+              <textarea class="form-control mb-2" id="chartData" rows="6">Enero, 42
+Febrero, 58
+Marzo, 49
+Abril, 74
+Mayo, 88
+Junio, 95</textarea>
+              <div class="form-text mb-3">Formato por línea: <code>Etiqueta, número</code></div>
+              <button class="btn btn-primary w-100" id="renderChart" type="button">
+                <i class="bi bi-bar-chart me-2"></i>Actualizar gráfico
+              </button>
+              <div class="status-line" id="chartStatus"></div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="panel tool-panel h-100">
+              <div class="panel-header">
+                <div>
+                  <h2 class="panel-title">Lienzo interactivo APIS</h2>
+                  <p class="panel-subtitle">Pasa el cursor sobre los elementos para inspeccionar valores exactos.</p>
+                </div>
+              </div>
+              <div class="chart-wrap">
+                <canvas id="dataChart" aria-label="Gráfico de datos"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13. ÁRBOL DE MÓDULOS -->
+      <section class="module-view" id="view-tree">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><i class="bi bi-diagram-3"></i> Arquitectura</div>
+            <h1>Árbol de módulos</h1>
+            <p>Explora y edita la jerarquía de herramientas de APIS en tiempo real con jsTree.</p>
+          </div>
+        </div>
+
+        <div class="panel tool-panel">
+          <div class="panel-header flex-wrap">
+            <div>
+              <h2 class="panel-title">Estructura jerárquica de APIS</h2>
+              <p class="panel-subtitle">Haz doble clic en un módulo para abrirlo, o agrega y renombra nodos.</p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-outline-secondary btn-sm" id="expandTreeBtn" type="button"><i class="bi bi-arrows-expand me-1"></i>Expandir todo</button>
+              <button class="btn btn-outline-secondary btn-sm" id="collapseTreeBtn" type="button"><i class="bi bi-arrows-collapse me-1"></i>Contraer</button>
+              <button class="btn btn-outline-secondary btn-sm" id="renameTreeNode" type="button"><i class="bi bi-pencil me-1"></i>Renombrar</button>
+              <button class="btn btn-outline-secondary btn-sm text-danger" id="deleteTreeNode" type="button"><i class="bi bi-trash me-1"></i>Eliminar</button>
+            </div>
+          </div>
+
+          <div class="row g-2 align-items-center mb-3">
+            <div class="col-sm-8 col-md-5">
+              <input type="text" id="newTreeNodeInput" class="form-control form-control-sm" placeholder="Nombre del nuevo nodo hijo...">
+            </div>
+            <div class="col-sm-4 col-md-auto">
+              <button class="btn btn-primary btn-sm w-100" id="addTreeNode" type="button">
+                <i class="bi bi-plus-lg me-1"></i>Agregar al nodo seleccionado
+              </button>
+            </div>
+            <div class="col-12">
+              <div class="status-line mt-0" id="treeStatus"></div>
+            </div>
+          </div>
+
+          <div class="tree-area" id="moduleTree"></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div><strong>APIS</strong> © 2026 · Plataforma Integral de Servicios Interactivos</div>
+        <div>Diseñado para alto rendimiento · 12 módulos conectados</div>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jstree@3.3.17/dist/jstree.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<script>
+const IMGBB_API_KEY = "dc945b856ce601f63c16c684308a2bbe";
+(() => {
+  const MODULES = [
+    { id: "email", name: "Servicio de correo", description: "Envía mensajes con EmailJS y previsualiza el diseño en vivo.", icon: "bi-envelope", category: "Productividad" },
+    { id: "calendar", name: "Google Calendar", description: "Sincroniza, crea y consulta eventos en tu calendario.", icon: "bi-calendar3", category: "Productividad" },
+    { id: "audio", name: "Reproductor de audio", description: "Escucha pistas locales con analizador de frecuencias en vivo.", icon: "bi-soundwave", category: "Multimedia" },
+    { id: "archive-audio", name: "Internet Archive Audio", description: "Busca y reproduce música y audios públicos de Internet Archive.", icon: "bi-music-note-beamed", category: "Multimedia" },
+    { id: "images", name: "Subida de imágenes", description: "Aloja imágenes en ImgBB y obtén enlaces directos.", icon: "bi-image", category: "Multimedia" },
+    { id: "location", name: "Geolocalización", description: "Obtén coordenadas GPS o explora ciudades en OpenStreetMap.", icon: "bi-geo-alt", category: "Datos & APIs" },
+    { id: "weather", name: "Clima", description: "Pronóstico actual y extendido de 5 días con Open-Meteo.", icon: "bi-cloud-sun", category: "Datos & APIs" },
+    { id: "currency", name: "Cambio de moneda", description: "Convierte divisas al instante con tasas de Frankfurter.", icon: "bi-currency-exchange", category: "Datos & APIs" },
+    { id: "movies", name: "Películas y series", description: "Explora series, calificaciones y sinopsis en TVmaze.", icon: "bi-film", category: "Datos & APIs" },
+    { id: "solar", name: "Sistema solar", description: "Simulador orbital interactivo con fichas astronómicas.", icon: "bi-globe-americas", category: "Visualización" },
+    { id: "charts", name: "Gráficos y estadísticas", description: "Crea gráficos dinámicos con Chart.js y descarga en PNG.", icon: "bi-bar-chart-line", category: "Visualización" },
+    { id: "tree", name: "Árbol de módulos", description: "Organiza la arquitectura de APIS con jsTree.", icon: "bi-diagram-3", category: "Visualización" }
+  ];
+
+  const titles = {
+    dashboard: "Panel principal",
+    email: "Servicio de correo",
+    calendar: "Google Calendar",
+    audio: "Reproductor de audio",
+    "archive-audio": "Internet Archive Audio",
+    images: "Subida de imágenes",
+    location: "Geolocalización",
+    weather: "Clima",
+    currency: "Cambio de moneda",
+    movies: "Películas y series",
+    solar: "Sistema solar",
+    charts: "Gráficos y estadísticas",
+    tree: "Árbol de módulos"
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const setStatus = (id, message, error = false) => {
+    const node = $(id);
+    if (node) {
+      node.textContent = message;
+      node.classList.toggle("text-danger", error);
+      node.classList.toggle("text-success", !error && message !== "");
+    }
+  };
+  const escapeHtml = (value) => String(value).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+  const errorMessage = (error) => error instanceof Error ? error.message : "Ocurrió un error inesperado.";
+  const fetchJson = async (url, options = {}) => {
+    const response = await fetch(url, options);
+    if (!response.ok) throw new Error(`Error del servicio (${response.status}).`);
+    return response.json();
+  };
+
+  // Safe clipboard helper for iframe compatibility
+  const copyTextSafe = async (text) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (_) {}
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  };
+
+  // Render Dashboard Module Cards with Filter & Search
+  const moduleCards = $("moduleCards");
+  let activeCategory = "all";
+  let searchQuery = "";
+
+  function renderDashboardCards() {
+    moduleCards.replaceChildren();
+    const filtered = MODULES.filter(m => {
+      const matchesCat = activeCategory === "all" || m.category === activeCategory;
+      const q = searchQuery.toLowerCase().trim();
+      const matchesQuery = !q || m.name.toLowerCase().includes(q) || m.description.toLowerCase().includes(q) || m.category.toLowerCase().includes(q);
+      return matchesCat && matchesQuery;
+    });
+
+    if (!filtered.length) {
+      moduleCards.innerHTML = `<div class="col-12"><div class="notice text-center py-4">No se encontraron módulos que coincidan con tu búsqueda.</div></div>`;
+      return;
+    }
+
+    filtered.forEach((module) => {
+      const col = document.createElement("div");
+      col.className = "col-12 col-sm-6 col-xl-4";
+      col.innerHTML = `
+        <article class="panel module-card" role="button" tabindex="0" data-open="${module.id}">
+          <span class="module-arrow"><i class="bi bi-arrow-up-right"></i></span>
+          <div class="module-icon"><i class="bi ${module.icon}"></i></div>
+          <h3>${escapeHtml(module.name)}</h3>
+          <p>${escapeHtml(module.description)}</p>
+          <span class="module-tag">${escapeHtml(module.category)}</span>
+        </article>`;
+      moduleCards.append(col);
+    });
+  }
+  renderDashboardCards();
+
+  $("categoryFilterBar").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-cat]");
+    if (!btn) return;
+    activeCategory = btn.dataset.cat;
+    document.querySelectorAll("#categoryFilterBar .filter-pill").forEach(b => b.classList.toggle("active", b === btn));
+    renderDashboardCards();
+  });
+
+  $("dashboardSearch").addEventListener("input", (e) => {
+    searchQuery = e.target.value;
+    renderDashboardCards();
+  });
+
+  // Navigation
+  let chartInstance = null;
+  function navigate(id) {
+    if (!titles[id]) return;
+    document.querySelectorAll(".module-view").forEach(v => v.classList.toggle("active", v.id === `view-${id}`));
+    document.querySelectorAll(".side-link").forEach(a => a.classList.toggle("active", a.dataset.page === id));
+    $("topTitle").textContent = titles[id];
+    $("crumb").textContent = titles[id];
+    $("sidebar").classList.remove("open");
+    $("mobileOverlay").classList.remove("show");
+    $("quickJumpDropdown").classList.remove("show");
+    if (id === "charts" && !chartInstance) renderChart();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.querySelectorAll("[data-page]").forEach(a => a.addEventListener("click", e => {
+    e.preventDefault();
+    navigate(a.dataset.page);
+  }));
+  moduleCards.addEventListener("click", e => {
+    const card = e.target.closest("[data-open]");
+    if (card) navigate(card.dataset.open);
+  });
+  moduleCards.addEventListener("keydown", e => {
+    if ((e.key === "Enter" || e.key === " ") && e.target.matches("[data-open]")) {
+      e.preventDefault();
+      navigate(e.target.dataset.open);
+    }
+  });
+
+  // Quick Jump Search in Topbar (Ctrl+K)
+  const quickInput = $("quickJumpInput");
+  const quickDropdown = $("quickJumpDropdown");
+
+  function updateQuickDropdown(val) {
+    const q = val.toLowerCase().trim();
+    const allItems = [{ id: "dashboard", name: "Panel principal", icon: "bi-house-door" }, ...MODULES];
+    const matches = allItems.filter(item => item.name.toLowerCase().includes(q));
+    if (!matches.length) {
+      quickDropdown.innerHTML = `<div class="small text-secondary p-2">Sin resultados</div>`;
+    } else {
+      quickDropdown.innerHTML = matches.map(m => `
+        <button type="button" class="quick-item" data-jump="${m.id}">
+          <i class="bi ${m.icon}"></i>
+          <span>${escapeHtml(m.name)}</span>
+        </button>
+      `).join("");
+    }
+    quickDropdown.classList.add("show");
+  }
+
+  quickInput.addEventListener("focus", () => updateQuickDropdown(quickInput.value));
+  quickInput.addEventListener("input", () => updateQuickDropdown(quickInput.value));
+  quickDropdown.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-jump]");
+    if (btn) {
+      quickInput.value = "";
+      navigate(btn.dataset.jump);
+    }
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".topbar-search")) quickDropdown.classList.remove("show");
+  });
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      quickInput.focus();
+    }
+  });
+
+  // Date & Theme
+  $("todayBadge").textContent = new Intl.DateTimeFormat("es-PE", { dateStyle: "full" }).format(new Date());
+  $("themeToggle").addEventListener("click", () => {
+    const dark = document.documentElement.dataset.theme !== "dark";
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    $("themeToggle").innerHTML = dark ? '<i class="bi bi-sun"></i>' : '<i class="bi bi-moon-stars"></i>';
+    try { localStorage.setItem("apis-theme", dark ? "dark" : "light"); } catch (_) {}
+    if (chartInstance) {
+      chartInstance.destroy();
+      chartInstance = null;
+      if ($("view-charts").classList.contains("active")) renderChart();
+    }
+  });
+  try {
+    const savedTheme = localStorage.getItem("apis-theme");
+    if (savedTheme === "dark") {
+      document.documentElement.dataset.theme = "dark";
+      $("themeToggle").innerHTML = '<i class="bi bi-sun"></i>';
+    }
+  } catch (_) {}
+
+  $("menuToggle").addEventListener("click", () => {
+    $("sidebar").classList.toggle("open");
+    $("mobileOverlay").classList.toggle("show");
+  });
+  $("mobileOverlay").addEventListener("click", () => {
+    $("sidebar").classList.remove("open");
+    $("mobileOverlay").classList.remove("show");
+  });
+
+  // ==========================================
+  // MODULE 1: EMAIL SERVICE + LIVE PREVIEW
+  // ==========================================
+  const emailSettingsStorageKey = "diley-email-settings";
+  const emailSettingsDefaults = {
+    emailService: "service_80he8ch",
+    emailTemplate: "template_s2kwosf",
+    emailPublic: "wJOpv5rPleMQ3VC3d",
+    emailTo: "diego.alejos1999@gmail.com"
+  };
+  const saveEmailSettings = () => {
+    try {
+      localStorage.setItem(emailSettingsStorageKey, JSON.stringify(Object.fromEntries(
+        Object.keys(emailSettingsDefaults).map(id => [id, $(id).value])
+      )));
+    } catch (error) {
+      console.error("No se pudo guardar la configuración del correo.", error);
+      setStatus("emailStatus", "No se pudo guardar la configuración del correo en este navegador.", true);
+    }
+  };
+  try {
+    const savedEmailSettings = JSON.parse(localStorage.getItem(emailSettingsStorageKey) || "{}");
+    Object.entries(emailSettingsDefaults).forEach(([id, defaultValue]) => {
+      $(id).value = typeof savedEmailSettings[id] === "string" ? savedEmailSettings[id] : defaultValue;
+    });
+    saveEmailSettings();
+  } catch (error) {
+    console.error("No se pudo recuperar la configuración del correo.", error);
+    Object.entries(emailSettingsDefaults).forEach(([id, defaultValue]) => {
+      $(id).value = defaultValue;
+    });
+    setStatus("emailStatus", "No se pudo recuperar la configuración guardada; se cargaron los valores predeterminados.", true);
+  }
+  Object.keys(emailSettingsDefaults).forEach(id => {
+    $(id).addEventListener("input", saveEmailSettings);
+    $(id).addEventListener("change", saveEmailSettings);
+  });
+
+  const updateEmailPreview = () => {
+    $("previewEmailTo").textContent = $("emailTo").value.trim() || "destinatario@ejemplo.com";
+    $("previewEmailSubject").textContent = $("emailSubject").value.trim() || "Sin asunto";
+    $("previewEmailBody").textContent = $("emailMessage").value.trim() || "Escribe un mensaje a la izquierda para previsualizarlo aquí...";
+  };
+  ["emailTo", "emailSubject", "emailMessage"].forEach(id => $(id).addEventListener("input", updateEmailPreview));
+
+  $("fillDemoEmail").addEventListener("click", () => {
+    $("emailTo").value = "contacto@empresa.com";
+    $("emailSubject").value = "Bienvenido a la plataforma APIS";
+    $("emailMessage").value = "Hola,\n\nTe escribimos desde el módulo de comunicaciones de APIS para confirmar que la integración con EmailJS está lista.\n\nSaludos cordiales,\nEquipo APIS";
+    saveEmailSettings();
+    updateEmailPreview();
+    setStatus("emailStatus", "Plantilla de demostración cargada.");
+  });
+
+  $("emailForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    setStatus("emailStatus", "Enviando...");
+    const sendButton = $("emailSend");
+    sendButton.disabled = true;
+    try {
+      if (!window.emailjs || typeof window.emailjs.init !== "function" || typeof window.emailjs.send !== "function") {
+        throw new Error("No se pudo cargar EmailJS v4. Verifica tu conexión e inténtalo de nuevo.");
+      }
+
+      const service = $("emailService").value.trim();
+      const template = $("emailTemplate").value.trim();
+      const publicKey = $("emailPublic").value.trim();
+      if (!service || !template || !publicKey) {
+        throw new Error("Completa el Service ID, Template ID y Public Key de EmailJS.");
+      }
+
+      window.emailjs.init({ publicKey });
+      const response = await window.emailjs.send(service, template, {
+        to_email: $("emailTo").value.trim(),
+        subject: $("emailSubject").value.trim(),
+        message: $("emailMessage").value.trim()
+      });
+      if (response?.status !== 200) {
+        const details = response?.text || "EmailJS no confirmó el envío.";
+        throw new Error(`EmailJS respondió con estado ${response?.status ?? "desconocido"}: ${details}`);
+      }
+      setStatus("emailStatus", "Correo enviado correctamente.");
+    } catch (error) {
+      const details = [error?.text, error?.message, error?.status ? `Estado ${error.status}` : ""].filter(Boolean).join(" — ");
+      setStatus("emailStatus", details || errorMessage(error), true);
+    } finally {
+      sendButton.disabled = false;
+    }
+  });
+
+  // ==========================================
+  // MODULE 2: GOOGLE CALENDAR
+  // ==========================================
+  const googleClientStorageKey = "apis_google_client_id";
+  const googleClientDefault = "287370186694-p8fv874a5go8d2ev3ekeksm2bb95khg5.apps.googleusercontent.com";
+  const googleClientInput = $("googleClient");
+  try {
+    const savedGoogleClientId = localStorage.getItem(googleClientStorageKey)?.trim();
+    googleClientInput.value = savedGoogleClientId || googleClientDefault;
+    if (!savedGoogleClientId) localStorage.setItem(googleClientStorageKey, googleClientDefault);
+  } catch (error) {
+    console.error("No se pudo recuperar el OAuth Client ID de Google.", error);
+    if (!googleClientInput.value.trim()) googleClientInput.value = googleClientDefault;
+  }
+  googleClientInput.addEventListener("input", () => {
+    try {
+      localStorage.setItem(googleClientStorageKey, googleClientInput.value);
+    } catch (error) {
+      console.error("No se pudo guardar el OAuth Client ID de Google.", error);
+    }
+  });
+
+  let googleTokenClient = null, googleAccessToken = null;
+  function loadGoogleScript() {
+    return new Promise((resolve, reject) => {
+      if (window.google?.accounts?.oauth2) { resolve(); return; }
+      const started = Date.now();
+      const timer = setInterval(() => {
+        if (window.google?.accounts?.oauth2) { clearInterval(timer); resolve(); }
+        else if (Date.now() - started > 10000) { clearInterval(timer); reject(new Error("No se pudo cargar la autenticación de Google.")); }
+      }, 100);
+    });
+  }
+
+  $("googleConnect").addEventListener("click", async () => {
+    const clientId = $("googleClient").value.trim();
+    if (!clientId) { setStatus("calendarStatus", "Introduce el OAuth Client ID de Google.", true); return; }
+    try {
+      await loadGoogleScript();
+      googleTokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.readonly",
+        callback: async (result) => {
+          if (result.error) { setStatus("calendarStatus", `Autorización no completada: ${result.error}`, true); return; }
+          googleAccessToken = result.access_token;
+          $("googleSignout").disabled = false;
+          setStatus("calendarStatus", "Cuenta conectada en APIS. Cargando eventos...");
+          await loadCalendarEvents();
+        }
+      });
+      googleTokenClient.requestAccessToken({ prompt: "consent" });
+    } catch (error) {
+      setStatus("calendarStatus", errorMessage(error), true);
+    }
+  });
+
+  $("googleSignout").addEventListener("click", () => {
+    if (googleAccessToken && window.google?.accounts?.oauth2) google.accounts.oauth2.revoke(googleAccessToken, () => {});
+    googleAccessToken = null;
+    googleTokenClient = null;
+    $("googleSignout").disabled = true;
+    $("eventsList").textContent = "Conecta tu cuenta de Google para listar tus próximos eventos.";
+    setStatus("calendarStatus", "Sesión desconectada.");
+  });
+
+  async function loadCalendarEvents() {
+    if (!googleAccessToken) { setStatus("calendarStatus", "Conecta tu cuenta primero.", true); return; }
+    try {
+      const data = await fetchJson("https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=10&orderBy=startTime&singleEvents=true&timeMin=" + encodeURIComponent(new Date().toISOString()), {
+        headers: { Authorization: `Bearer ${googleAccessToken}` }
+      });
+      const items = data.items || [];
+      if (!items.length) {
+        $("eventsList").innerHTML = "No hay próximos eventos programados.";
+        $("eventsList").classList.add("show");
+      } else {
+        $("eventsList").innerHTML = items.map(event => {
+          const when = event.start?.dateTime || event.start?.date;
+          const date = when ? new Date(when).toLocaleString("es-PE", { dateStyle: "medium", timeStyle: event.start?.dateTime ? "short" : undefined }) : "Fecha sin especificar";
+          return `<div class="py-2 border-bottom d-flex justify-content-between align-items-center">
+            <div>
+              <div class="fw-semibold">${escapeHtml(event.summary || "Evento sin título")}</div>
+              <div class="small text-secondary"><i class="bi bi-clock me-1"></i>${escapeHtml(date)}</div>
+            </div>
+            <span class="badge text-bg-primary">Activo</span>
+          </div>`;
+        }).join("");
+        $("eventsList").classList.add("show");
+      }
+      setStatus("calendarStatus", "Eventos actualizados.");
+    } catch (error) {
+      setStatus("calendarStatus", errorMessage(error), true);
+    }
+  }
+
+  $("refreshEvents").addEventListener("click", loadCalendarEvents);
+  $("eventForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    if (!googleAccessToken) { setStatus("eventStatus", "Conecta tu cuenta de Google antes de crear eventos.", true); return; }
+    const start = new Date($("eventStart").value), end = new Date($("eventEnd").value);
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime()) || end <= start) {
+      setStatus("eventStatus", "La fecha de fin debe ser posterior a la fecha de inicio.", true);
+      return;
+    }
+    setStatus("eventStatus", "Creando evento...");
+    try {
+      await fetchJson("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${googleAccessToken}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          summary: $("eventTitle").value.trim(),
+          description: $("eventDescription").value.trim(),
+          start: { dateTime: start.toISOString() },
+          end: { dateTime: end.toISOString() }
+        })
+      });
+      setStatus("eventStatus", "Evento creado correctamente.");
+      $("eventForm").reset();
+      await loadCalendarEvents();
+    } catch (error) {
+      setStatus("eventStatus", errorMessage(error), true);
+    }
+  });
+
+  // ==========================================
+  // MODULE 3: AUDIO PLAYER + WEB AUDIO VISUALIZER
+  // ==========================================
+  const audioUrls = [];
+  let audioCtx = null, analyser = null, animFrameId = null;
+  const visCanvas = $("audioVisualizer");
+  const visCtx = visCanvas.getContext("2d");
+
+  function drawIdleVisualizer() {
+    visCtx.fillStyle = "#0b0f19";
+    visCtx.fillRect(0, 0, visCanvas.width, visCanvas.height);
+    visCtx.strokeStyle = "rgba(99, 102, 241, 0.35)";
+    visCtx.lineWidth = 2;
+    visCtx.beginPath();
+    visCtx.moveTo(0, visCanvas.height / 2);
+    visCtx.lineTo(visCanvas.width, visCanvas.height / 2);
+    visCtx.stroke();
+  }
+  drawIdleVisualizer();
+
+  function connectVisualizer(audioEl, trackName) {
+    try {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 128;
+      }
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      if (!audioEl._sourceNode) {
+        audioEl._sourceNode = audioCtx.createMediaElementSource(audioEl);
+        audioEl._sourceNode.connect(analyser);
+        analyser.connect(audioCtx.destination);
+      }
+      $("nowPlayingLabel").textContent = `Reproduciendo: ${trackName}`;
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      const renderFrame = () => {
+        animFrameId = requestAnimationFrame(renderFrame);
+        analyser.getByteFrequencyData(dataArray);
+        visCtx.fillStyle = "#0b0f19";
+        visCtx.fillRect(0, 0, visCanvas.width, visCanvas.height);
+        const barWidth = (visCanvas.width / bufferLength) * 1.6;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = (dataArray[i] / 255) * (visCanvas.height - 12);
+          const grad = visCtx.createLinearGradient(0, visCanvas.height, 0, 0);
+          grad.addColorStop(0, "#4f46e5");
+          grad.addColorStop(1, "#38bdf8");
+          visCtx.fillStyle = grad;
+          visCtx.fillRect(x, visCanvas.height - barHeight, barWidth - 3, barHeight);
+          x += barWidth;
+        }
+      };
+      renderFrame();
+    } catch (_) {}
+  }
+
+  function handleAudioFiles(fileList) {
+    audioUrls.splice(0).forEach(URL.revokeObjectURL);
+    $("audioList").replaceChildren();
+    const speed = Number($("audioSpeed").value) || 1;
+    Array.from(fileList || []).forEach(file => {
+      const url = URL.createObjectURL(file);
+      audioUrls.push(url);
+      const card = document.createElement("div");
+      card.className = "panel p-3 audio-player";
+      const header = document.createElement("div");
+      header.className = "d-flex justify-content-between align-items-center mb-2";
+      header.innerHTML = `<span class="small fw-semibold"><i class="bi bi-file-earmark-music text-primary me-2"></i>${escapeHtml(file.name)}</span>
+                          <span class="badge text-bg-light border">${(file.size / (1024 * 1024)).toFixed(2)} MB</span>`;
+      const audio = document.createElement("audio");
+      audio.controls = true;
+      audio.preload = "metadata";
+      audio.src = url;
+      audio.playbackRate = speed;
+      audio.className = "w-100";
+      audio.addEventListener("play", () => {
+        document.querySelectorAll("#audioList audio").forEach(other => {
+          if (other !== audio) other.pause();
+        });
+        connectVisualizer(audio, file.name);
+      });
+      card.append(header, audio);
+      $("audioList").append(card);
+    });
+  }
+
+  $("audioFiles").addEventListener("change", e => handleAudioFiles(e.target.files));
+  $("audioSpeed").addEventListener("change", e => {
+    const rate = Number(e.target.value) || 1;
+    document.querySelectorAll("#audioList audio").forEach(a => { a.playbackRate = rate; });
+  });
+  window.addEventListener("beforeunload", () => audioUrls.forEach(URL.revokeObjectURL));
+
+  // ==========================================
+  // MODULE 4: INTERNET ARCHIVE AUDIO
+  // ==========================================
+  const archiveSearchEndpoint = "https://archive.org/advancedsearch.php";
+  const archiveMetadataEndpoint = "https://archive.org/metadata/";
+  const archivePlaylistStorageKey = "apis_archive_audio_playlist";
+  const archiveAudio = $("archiveAudio");
+  let archivePlaylist = [];
+  let archiveCurrentIndex = -1;
+  let archiveSearchSequence = 0;
+  let archivePlaybackSequence = 0;
+
+  function archiveFileUrl(identifier, name) {
+    return `https://archive.org/download/${encodeURIComponent(identifier)}/${encodeURIComponent(name)}`;
+  }
+
+  function archiveDuration(value) {
+    if (value === undefined || value === null || value === "") return "";
+    const raw = String(value).trim();
+    if (/^\d+(?::\d{1,2}){1,2}$/.test(raw)) return raw;
+    const seconds = Number(raw);
+    if (!Number.isFinite(seconds) || seconds < 0) return "";
+    const total = Math.floor(seconds);
+    const hours = Math.floor(total / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const remaining = total % 60;
+    return hours ? `${hours}:${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}` : `${minutes}:${String(remaining).padStart(2, "0")}`;
+  }
+
+  function archiveClock(seconds) {
+    if (!Number.isFinite(seconds) || seconds < 0) return "--:--";
+    const total = Math.floor(seconds);
+    const hours = Math.floor(total / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const remaining = total % 60;
+    return hours ? `${hours}:${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}` : `${minutes}:${String(remaining).padStart(2, "0")}`;
+  }
+
+  function archiveText(value) {
+    return Array.isArray(value) ? value.filter(Boolean).join(", ") : (typeof value === "string" ? value : "");
+  }
+
+  function archiveIsPrivate(value) {
+    return value === true || value === 1 || String(value).toLowerCase() === "true";
+  }
+
+  function archiveTrackKey(track) {
+    const fileName = track.files[0]?.name || "";
+    return `${track.identifier}|${fileName.replace(/\.(mp3|ogg|oga)$/i, "").toLowerCase()}`;
+  }
+
+  function archiveNormalizeTrack(value) {
+    if (!value || typeof value.identifier !== "string" || !/^[\w.-]+$/.test(value.identifier)) return null;
+    if (!Array.isArray(value.files)) return null;
+    const files = value.files.filter(file =>
+      file && typeof file.name === "string" &&
+      /\.(mp3|ogg|oga)$/i.test(file.name) &&
+      !archiveIsPrivate(file.private)
+    ).map(file => ({
+      name: file.name,
+      format: /\.mp3$/i.test(file.name) ? "MP3" : "OGG",
+      url: archiveFileUrl(value.identifier, file.name)
+    }));
+    if (!files.length) return null;
+    return {
+      identifier: value.identifier,
+      title: typeof value.title === "string" ? value.title : value.identifier,
+      creator: typeof value.creator === "string" ? value.creator : "",
+      duration: typeof value.duration === "string" ? value.duration : "",
+      files
+    };
+  }
+
+  function updateArchiveTransportControls() {
+    $("archivePrevious").disabled = archiveCurrentIndex < 0;
+    $("archiveNext").disabled = archiveCurrentIndex < 0 || archiveCurrentIndex >= archivePlaylist.length - 1;
+  }
+
+  function saveArchivePlaylist() {
+    try {
+      localStorage.setItem(archivePlaylistStorageKey, JSON.stringify(archivePlaylist));
+    } catch (error) {
+      console.error("No se pudo guardar la lista de reproducción de Internet Archive.", error);
+      setStatus("archivePlayerStatus", "No se pudo guardar la lista en este navegador.", true);
+    }
+  }
+
+  function renderArchivePlaylist() {
+    const list = $("archivePlaylist");
+    list.replaceChildren();
+    if (!archivePlaylist.length) {
+      const empty = document.createElement("div");
+      empty.className = "notice";
+      empty.textContent = "Añade audios desde los resultados para crear tu lista.";
+      list.append(empty);
+      updateArchiveTransportControls();
+      return;
+    }
+    archivePlaylist.forEach((track, index) => {
+      const row = document.createElement("div");
+      row.className = `archive-track${index === archiveCurrentIndex ? " is-current" : ""}`;
+      const copy = document.createElement("div");
+      copy.className = "archive-track-copy";
+      const title = document.createElement("div");
+      title.className = "archive-track-title";
+      title.textContent = track.title;
+      const meta = document.createElement("div");
+      meta.className = "archive-track-meta";
+      meta.textContent = [track.creator || "Artista desconocido", track.duration].filter(Boolean).join(" · ");
+      copy.append(title, meta);
+      const actions = document.createElement("div");
+      actions.className = "d-flex gap-1 flex-shrink-0";
+      const play = document.createElement("button");
+      play.type = "button";
+      play.className = "btn btn-sm btn-outline-primary";
+      play.setAttribute("aria-label", `Reproducir ${track.title}`);
+      play.innerHTML = '<i class="bi bi-play-fill"></i>';
+      play.addEventListener("click", () => playArchiveTrack(index));
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "btn btn-sm btn-outline-secondary";
+      remove.setAttribute("aria-label", `Quitar ${track.title} de la lista`);
+      remove.innerHTML = '<i class="bi bi-x-lg"></i>';
+      remove.addEventListener("click", () => removeArchiveTrack(index));
+      actions.append(play, remove);
+      row.append(copy, actions);
+      list.append(row);
+    });
+    updateArchiveTransportControls();
+  }
+
+  function addArchiveTrack(track, playNow = false) {
+    const normalized = archiveNormalizeTrack(track);
+    if (!normalized) {
+      setStatus("archivePlayerStatus", "Este audio no tiene un archivo MP3 u OGG público disponible.", true);
+      return;
+    }
+    let index = archivePlaylist.findIndex(item => archiveTrackKey(item) === archiveTrackKey(normalized));
+    if (index < 0) {
+      archivePlaylist.push(normalized);
+      index = archivePlaylist.length - 1;
+      saveArchivePlaylist();
+      renderArchivePlaylist();
+    } else {
+      setStatus("archivePlayerStatus", "Este audio ya está en tu lista.");
+    }
+    if (playNow) playArchiveTrack(index);
+  }
+
+  function removeArchiveTrack(index) {
+    if (index < 0 || index >= archivePlaylist.length) return;
+    if (index === archiveCurrentIndex) {
+      archiveAudio.pause();
+      archiveAudio.removeAttribute("src");
+      archiveAudio.load();
+      archiveCurrentIndex = -1;
+      $("archiveNowTitle").textContent = "Selecciona un audio";
+      $("archiveNowArtist").textContent = "Internet Archive";
+      $("archivePlayPause").disabled = true;
+      $("archiveFormat").disabled = true;
+    } else if (index < archiveCurrentIndex) {
+      archiveCurrentIndex--;
+    }
+    archivePlaylist.splice(index, 1);
+    saveArchivePlaylist();
+    renderArchivePlaylist();
+  }
+
+  function renderArchiveResults(tracks) {
+    const results = $("archiveResults");
+    results.replaceChildren();
+    if (!tracks.length) {
+      const empty = document.createElement("div");
+      empty.className = "notice";
+      empty.textContent = "No se encontraron archivos MP3 u OGG públicos para esta búsqueda.";
+      results.append(empty);
+      return;
+    }
+    tracks.forEach(track => {
+      const card = document.createElement("article");
+      card.className = "archive-result";
+      const copy = document.createElement("div");
+      copy.className = "archive-result-copy";
+      const title = document.createElement("div");
+      title.className = "archive-result-title";
+      title.textContent = track.title;
+      const meta = document.createElement("div");
+      meta.className = "archive-result-meta";
+      const formats = [...new Set(track.files.map(file => file.format))].join(" / ");
+      meta.textContent = [track.creator || "Artista desconocido", track.duration || "Duración no disponible", formats].join(" · ");
+      copy.append(title, meta);
+      const actions = document.createElement("div");
+      actions.className = "d-flex gap-2 flex-shrink-0";
+      const add = document.createElement("button");
+      add.type = "button";
+      add.className = "btn btn-outline-primary btn-sm";
+      add.innerHTML = '<i class="bi bi-plus-lg me-1"></i>Añadir';
+      add.addEventListener("click", () => addArchiveTrack(track));
+      const play = document.createElement("button");
+      play.type = "button";
+      play.className = "btn btn-primary btn-sm";
+      play.innerHTML = '<i class="bi bi-play-fill me-1"></i>Reproducir';
+      play.addEventListener("click", () => addArchiveTrack(track, true));
+      actions.append(add, play);
+      card.append(copy, actions);
+      results.append(card);
+    });
+  }
+
+  async function fetchArchiveTracks(doc) {
+    if (!doc || typeof doc.identifier !== "string" || !/^[\w.-]+$/.test(doc.identifier)) return [];
+    const response = await fetchJson(archiveMetadataEndpoint + encodeURIComponent(doc.identifier));
+    const metadata = response.metadata || {};
+    if (archiveIsPrivate(metadata.private) || archiveIsPrivate(metadata["access-restricted-item"])) return [];
+    const files = (Array.isArray(response.files) ? response.files : [])
+      .filter(file =>
+        file && typeof file.name === "string" &&
+        /\.(mp3|ogg|oga)$/i.test(file.name) &&
+        !archiveIsPrivate(file.private)
+      )
+      .sort((a, b) => (/\.mp3$/i.test(b.name) ? 1 : 0) - (/\.mp3$/i.test(a.name) ? 1 : 0));
+    if (!files.length) return [];
+    const groups = new Map();
+    files.forEach(file => {
+      const baseName = file.name.replace(/\.(mp3|ogg|oga)$/i, "");
+      const key = baseName.toLowerCase();
+      if (!groups.has(key)) groups.set(key, { baseName, files: [] });
+      groups.get(key).files.push({
+        name: file.name,
+        private: file.private,
+        format: /\.mp3$/i.test(file.name) ? "MP3" : "OGG",
+        length: file.length
+      });
+    });
+    const groupEntries = [...groups.values()].slice(0, 5);
+    const itemTitle = archiveText(metadata.title) || archiveText(doc.title) || doc.identifier;
+    const creator = archiveText(metadata.creator) || archiveText(doc.creator);
+    return groupEntries.map(group => archiveNormalizeTrack({
+      identifier: doc.identifier,
+      title: groups.size === 1 ? itemTitle : group.baseName.replace(/[_]+/g, " ").replace(/[-]+/g, " ").trim(),
+      creator,
+      duration: archiveDuration(group.files.find(file => file.length)?.length || doc.runtime),
+      files: group.files
+    })).filter(Boolean);
+  }
+
+  async function searchArchiveAudio(term) {
+    const sequence = ++archiveSearchSequence;
+    const queryText = term.replace(/[\u0000-\u001f]/g, " ").trim().replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    const params = new URLSearchParams();
+    params.set("q", `mediatype:audio AND (title:"${queryText}" OR creator:"${queryText}")`);
+    ["identifier", "title", "creator", "runtime"].forEach(field => params.append("fl[]", field));
+    params.set("rows", "16");
+    params.set("page", "1");
+    params.set("output", "json");
+    const results = $("archiveResults");
+    results.replaceChildren();
+    const loading = document.createElement("div");
+    loading.className = "notice";
+    loading.textContent = "Buscando audios en Internet Archive...";
+    results.append(loading);
+    $("archiveSearchButton").disabled = true;
+    setStatus("archiveSearchStatus", "Consultando el catálogo público...");
+    try {
+      const data = await fetchJson(`${archiveSearchEndpoint}?${params.toString()}`);
+      const docs = data.response && Array.isArray(data.response.docs) ? data.response.docs : [];
+      const checked = await Promise.allSettled(docs.map(fetchArchiveTracks));
+      if (sequence !== archiveSearchSequence) return;
+      const playable = checked
+        .filter(result => result.status === "fulfilled")
+        .flatMap(result => result.value)
+        .slice(0, 40);
+      renderArchiveResults(playable);
+      const failed = checked.filter(result => result.status === "rejected").length;
+      const total = data.response?.numFound || 0;
+      setStatus(
+        "archiveSearchStatus",
+        playable.length
+          ? `${playable.length} resultados reproducibles${total ? ` · ${total.toLocaleString("es-ES")} coincidencias en el catálogo` : ""}${failed ? ` · ${failed} metadatos no disponibles` : ""}.`
+          : (failed ? "No se pudieron consultar algunos metadatos. Prueba de nuevo." : "No se encontraron archivos MP3 u OGG públicos para esta búsqueda."),
+        !playable.length && failed > 0
+      );
+    } catch (error) {
+      if (sequence !== archiveSearchSequence) return;
+      console.error("No se pudo buscar audio en Internet Archive.", error);
+      results.replaceChildren();
+      const message = document.createElement("div");
+      message.className = "notice text-danger";
+      message.textContent = "No se pudo completar la búsqueda. Comprueba tu conexión e inténtalo de nuevo.";
+      results.append(message);
+      setStatus("archiveSearchStatus", errorMessage(error), true);
+    } finally {
+      if (sequence === archiveSearchSequence) $("archiveSearchButton").disabled = false;
+    }
+  }
+
+  function setArchivePlayingState(playing) {
+    const button = $("archivePlayPause");
+    button.innerHTML = playing ? '<i class="bi bi-pause-fill"></i>' : '<i class="bi bi-play-fill"></i>';
+    button.setAttribute("aria-label", playing ? "Pausar" : "Reproducir");
+    button.title = playing ? "Pausar" : "Reproducir";
+  }
+
+  async function playArchiveTrack(index) {
+    const track = archivePlaylist[index];
+    if (!track || !track.files.length) {
+      setStatus("archivePlayerStatus", "Este audio ya no está disponible en la lista.", true);
+      return;
+    }
+    archiveCurrentIndex = index;
+    const playbackSequence = ++archivePlaybackSequence;
+    const formatSelect = $("archiveFormat");
+    formatSelect.replaceChildren();
+    track.files.forEach((file, fileIndex) => {
+      const option = document.createElement("option");
+      option.value = String(fileIndex);
+      option.textContent = `${file.format} · ${file.name}`;
+      formatSelect.append(option);
+    });
+    formatSelect.disabled = track.files.length < 2;
+    $("archiveNowTitle").textContent = track.title;
+    $("archiveNowArtist").textContent = track.creator || "Artista desconocido";
+    $("archivePlayPause").disabled = false;
+    renderArchivePlaylist();
+    archiveAudio.src = track.files[0].url;
+    archiveAudio.load();
+    setStatus("archivePlayerStatus", "Cargando audio público...");
+    try {
+      await archiveAudio.play();
+      if (playbackSequence === archivePlaybackSequence) setStatus("archivePlayerStatus", "");
+    } catch (error) {
+      if (playbackSequence !== archivePlaybackSequence || error.name === "AbortError") return;
+      console.error("No se pudo iniciar la reproducción del audio de Internet Archive.", error);
+      setStatus("archivePlayerStatus", "No se pudo reproducir este archivo. Prueba con otro formato o resultado.", true);
+    }
+  }
+
+  function switchArchiveFormat() {
+    if (archiveCurrentIndex < 0) return;
+    const track = archivePlaylist[archiveCurrentIndex];
+    const selected = track && track.files[Number($("archiveFormat").value)];
+    if (!selected) return;
+    const playbackSequence = ++archivePlaybackSequence;
+    const wasPlaying = !archiveAudio.paused;
+    const currentTime = archiveAudio.currentTime;
+    archiveAudio.src = selected.url;
+    archiveAudio.load();
+    archiveAudio.addEventListener("loadedmetadata", () => {
+      if (playbackSequence !== archivePlaybackSequence) return;
+      if (Number.isFinite(currentTime) && currentTime < archiveAudio.duration) archiveAudio.currentTime = currentTime;
+      if (wasPlaying) {
+        archiveAudio.play().catch(error => {
+          if (playbackSequence !== archivePlaybackSequence || error.name === "AbortError") return;
+          console.error("No se pudo reproducir el formato seleccionado.", error);
+          setStatus("archivePlayerStatus", "No se pudo reproducir el formato seleccionado.", true);
+        });
+      } else {
+        setStatus("archivePlayerStatus", "");
+      }
+    }, { once: true });
+  }
+
+  $("archiveSearchForm").addEventListener("submit", event => {
+    event.preventDefault();
+    searchArchiveAudio($("archiveSearchInput").value.trim());
+  });
+  $("archiveClearPlaylist").addEventListener("click", () => {
+    archiveAudio.pause();
+    archiveAudio.removeAttribute("src");
+    archiveAudio.load();
+    archivePlaylist = [];
+    archiveCurrentIndex = -1;
+    $("archiveNowTitle").textContent = "Selecciona un audio";
+    $("archiveNowArtist").textContent = "Internet Archive";
+    $("archivePlayPause").disabled = true;
+    $("archiveFormat").replaceChildren();
+    $("archiveFormat").disabled = true;
+    saveArchivePlaylist();
+    renderArchivePlaylist();
+    setStatus("archivePlayerStatus", "Lista vaciada.");
+  });
+  $("archivePlayPause").addEventListener("click", async () => {
+    if (archiveCurrentIndex < 0) return;
+    if (archiveAudio.paused) {
+      try {
+        await archiveAudio.play();
+        setStatus("archivePlayerStatus", "");
+      } catch (error) {
+        if (error.name === "AbortError") return;
+        console.error("No se pudo reanudar la reproducción.", error);
+        setStatus("archivePlayerStatus", "No se pudo reanudar este audio.", true);
+      }
+    } else {
+      archiveAudio.pause();
+    }
+  });
+  $("archivePrevious").addEventListener("click", () => {
+    if (archiveCurrentIndex > 0) playArchiveTrack(archiveCurrentIndex - 1);
+    else if (archiveCurrentIndex === 0) archiveAudio.currentTime = 0;
+  });
+  $("archiveNext").addEventListener("click", () => {
+    if (archiveCurrentIndex >= 0 && archiveCurrentIndex < archivePlaylist.length - 1) playArchiveTrack(archiveCurrentIndex + 1);
+  });
+  $("archiveFormat").addEventListener("change", switchArchiveFormat);
+  $("archiveVolume").addEventListener("input", event => { archiveAudio.volume = Number(event.target.value); });
+  $("archiveProgress").addEventListener("input", event => {
+    if (Number.isFinite(archiveAudio.duration)) archiveAudio.currentTime = Number(event.target.value);
+  });
+  archiveAudio.volume = Number($("archiveVolume").value);
+  archiveAudio.addEventListener("play", () => setArchivePlayingState(true));
+  archiveAudio.addEventListener("pause", () => {
+    setArchivePlayingState(false);
+    if ($("archivePlayerStatus").textContent === "Cargando audio público...") setStatus("archivePlayerStatus", "");
+  });
+  archiveAudio.addEventListener("timeupdate", () => {
+    $("archiveCurrentTime").textContent = archiveClock(archiveAudio.currentTime);
+    if (Number.isFinite(archiveAudio.duration)) {
+      $("archiveProgress").max = String(archiveAudio.duration);
+      $("archiveProgress").value = String(archiveAudio.currentTime);
+      $("archiveProgress").disabled = false;
+    }
+  });
+  archiveAudio.addEventListener("loadedmetadata", () => {
+    $("archiveDuration").textContent = archiveClock(archiveAudio.duration);
+    $("archiveProgress").max = String(archiveAudio.duration);
+    $("archiveProgress").disabled = !Number.isFinite(archiveAudio.duration);
+  });
+  archiveAudio.addEventListener("ended", () => {
+    if (archiveCurrentIndex >= 0 && archiveCurrentIndex < archivePlaylist.length - 1) playArchiveTrack(archiveCurrentIndex + 1);
+    else setArchivePlayingState(false);
+  });
+  archiveAudio.addEventListener("error", () => {
+    if (archiveCurrentIndex >= 0) {
+      setArchivePlayingState(false);
+      setStatus("archivePlayerStatus", "El archivo no está disponible o el formato no se puede reproducir. Prueba el otro formato o quítalo de la lista.", true);
+    }
+  });
+  try {
+    const saved = JSON.parse(localStorage.getItem(archivePlaylistStorageKey) || "[]");
+    if (Array.isArray(saved)) archivePlaylist = saved.map(archiveNormalizeTrack).filter(Boolean).slice(0, 100);
+  } catch (error) {
+    console.error("No se pudo recuperar la lista de reproducción de Internet Archive.", error);
+    setStatus("archivePlayerStatus", "No se pudo recuperar la lista guardada en este navegador.", true);
+  }
+  renderArchivePlaylist();
+
+  // ==========================================
+  // MODULE 5: IMAGE UPLOAD (IMGBB) + PREVIEW
+  // ==========================================
+  const imgbbApiKeyStorageKey = "apis_imgbb_api_key";
+  try {
+    const savedApiKey = localStorage.getItem(imgbbApiKeyStorageKey)?.trim();
+    $("imgbbKey").value = savedApiKey || IMGBB_API_KEY;
+    if (!savedApiKey) localStorage.setItem(imgbbApiKeyStorageKey, IMGBB_API_KEY);
+  } catch (error) {
+    console.error("No se pudo recuperar la API Key de ImgBB.", error);
+    $("imgbbKey").value = IMGBB_API_KEY;
+    setStatus("imageStatus", "No se pudo recuperar la API Key guardada en este navegador.", true);
+  }
+  const saveImgbbApiKey = () => {
+    const apiKey = $("imgbbKey").value.trim();
+    if (!apiKey) return;
+    try {
+      localStorage.setItem(imgbbApiKeyStorageKey, apiKey);
+    } catch (error) {
+      console.error("No se pudo guardar la API Key de ImgBB.", error);
+      setStatus("imageStatus", "No se pudo guardar la API Key en este navegador.", true);
+    }
+  };
+  $("imgbbKey").addEventListener("input", saveImgbbApiKey);
+  $("imgbbKey").addEventListener("change", saveImgbbApiKey);
+
+  $("imageFile").addEventListener("change", e => {
+    const file = e.target.files?.[0];
+    if (!file || !file.type.startsWith("image/")) {
+      $("localImagePreviewBox").style.display = "none";
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      $("localImagePreview").src = ev.target.result;
+      $("localImageName").textContent = file.name;
+      $("localImageMeta").textContent = `${(file.size / 1024).toFixed(1)} KB · ${file.type}`;
+      $("localImagePreviewBox").style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  });
+
+  $("imageForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    setStatus("imageStatus", "Subiendo imagen a ImgBB...");
+    const button = $("imageUpload");
+    button.disabled = true;
+    $("imageResult").classList.remove("show");
+    try {
+      const file = $("imageFile").files[0];
+      if (!file) throw new Error("Selecciona una imagen.");
+      if (!file.type.startsWith("image/")) throw new Error("El archivo seleccionado no es una imagen.");
+      const apiKey = $("imgbbKey").value.trim() || IMGBB_API_KEY;
+      $("imgbbKey").value = apiKey;
+      saveImgbbApiKey();
+      const form = new FormData();
+      form.append("image", file);
+      const data = await fetchJson("https://api.imgbb.com/1/upload?key=" + encodeURIComponent(apiKey), {
+        method: "POST",
+        body: form
+      });
+      if (!data.success || !data.data?.url) throw new Error(data.error?.message || "ImgBB no devolvió un enlace de imagen.");
+      const link = data.data.url;
+      $("imageResult").innerHTML = `
+        <div class="d-flex gap-3 align-items-start flex-wrap">
+          <img src="${escapeHtml(link)}" alt="Vista previa de imagen subida" style="max-width:180px;max-height:150px;object-fit:contain;border-radius:10px">
+          <div class="flex-grow-1">
+            <div class="fw-semibold mb-1">Imagen publicada con éxito</div>
+            <a href="${escapeHtml(link)}" target="_blank" rel="noopener" class="small text-break">${escapeHtml(link)}</a>
+            <div class="mt-2">
+              <button class="btn btn-outline-secondary btn-sm" type="button" id="copyImageUrl">
+                <i class="bi bi-copy me-1"></i>Copiar enlace directo
+              </button>
+            </div>
+          </div>
+        </div>`;
+      $("imageResult").classList.add("show");
+      $("copyImageUrl").addEventListener("click", async () => {
+        const copied = await copyTextSafe(link);
+        setStatus("imageStatus", copied ? "Enlace copiado al portapapeles." : "Copia el enlace manualmente.", !copied);
+      });
+      setStatus("imageStatus", "Subida completada.");
+    } catch (error) {
+      setStatus("imageStatus", errorMessage(error), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  // ==========================================
+  // MODULE 6: GEOLOCATION + CITY PRESETS
+  // ==========================================
+  let currentCoordsText = "";
+  function renderMapCoords(latitude, longitude, accuracyLabel, placeTitle = "Coordenadas seleccionadas") {
+    currentCoordsText = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+    $("copyCoordsBtn").disabled = false;
+    $("locationResult").innerHTML = `
+      <div class="row g-3 align-items-center">
+        <div class="col-sm-3"><span class="text-secondary small">Referencia</span><div class="fw-bold">${escapeHtml(placeTitle)}</div></div>
+        <div class="col-sm-3"><span class="text-secondary small">Latitud</span><div class="fw-semibold">${latitude.toFixed(6)}</div></div>
+        <div class="col-sm-3"><span class="text-secondary small">Longitud</span><div class="fw-semibold">${longitude.toFixed(6)}</div></div>
+        <div class="col-sm-3"><span class="text-secondary small">Precisión / Modo</span><div class="fw-semibold">${escapeHtml(accuracyLabel)}</div></div>
+      </div>`;
+    $("locationResult").classList.add("show");
+    const frame = document.createElement("iframe");
+    frame.title = "Mapa de ubicación";
+    frame.loading = "lazy";
+    frame.referrerPolicy = "no-referrer-when-downgrade";
+    frame.style.cssText = "width:100%;height:360px;border:0;border-radius:14px";
+    frame.src = `https://www.openstreetmap.org/export/embed.html?bbox=${longitude - .02}%2C${latitude - .012}%2C${longitude + .02}%2C${latitude + .012}&layer=mapnik&marker=${latitude}%2C${longitude}`;
+    $("mapFrame").replaceChildren(frame);
+  }
+
+  $("locateButton").addEventListener("click", () => {
+    if (!navigator.geolocation) { setStatus("locationStatus", "Este navegador no ofrece geolocalización.", true); return; }
+    setStatus("locationStatus", "Solicitando permiso GPS al navegador...");
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude, accuracy } = position.coords;
+      renderMapCoords(latitude, longitude, `GPS ±${Math.round(accuracy)} m`, "Tu ubicación actual");
+      setStatus("locationStatus", "Ubicación GPS obtenida en OpenStreetMap.");
+    }, error => {
+      const messages = { 1: "Permiso de ubicación denegado.", 2: "No se pudo determinar la ubicación.", 3: "La solicitud de ubicación expiró." };
+      setStatus("locationStatus", messages[error.code] || "No se pudo obtener la ubicación.", true);
+    }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
+  });
+
+  document.querySelectorAll(".geo-preset").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const lat = Number(btn.dataset.lat), lon = Number(btn.dataset.lon);
+      renderMapCoords(lat, lon, "Marcador urbano", btn.dataset.label);
+      setStatus("locationStatus", `Mostrando mapa de ${btn.dataset.label}.`);
+    });
+  });
+
+  $("copyCoordsBtn").addEventListener("click", async () => {
+    if (!currentCoordsText) return;
+    const ok = await copyTextSafe(currentCoordsText);
+    setStatus("locationStatus", ok ? `Coordenadas copiadas (${currentCoordsText}).` : "No se pudo copiar.", !ok);
+  });
+
+  // ==========================================
+  // MODULE 7: WEATHER + 5-DAY FORECAST
+  // ==========================================
+  const weatherCodes = {
+    0: "Despejado", 1: "Mayormente despejado", 2: "Parcialmente nublado", 3: "Nublado",
+    45: "Niebla", 48: "Niebla con escarcha", 51: "Llovizna ligera", 53: "Llovizna moderada",
+    55: "Llovizna intensa", 56: "Llovizna helada ligera", 57: "Llovizna helada intensa",
+    61: "Lluvia ligera", 63: "Lluvia moderada", 65: "Lluvia intensa", 66: "Lluvia helada ligera",
+    67: "Lluvia helada intensa", 71: "Nieve ligera", 73: "Nieve moderada", 75: "Nieve intensa",
+    77: "Granizo de nieve", 80: "Chubascos ligeros", 81: "Chubascos moderados", 82: "Chubascos intensos",
+    85: "Chubascos de nieve ligeros", 86: "Chubascos de nieve intensos", 95: "Tormenta",
+    96: "Tormenta con granizo ligero", 99: "Tormenta con granizo intenso"
+  };
+
+  async function fetchWeatherForCity(query) {
+    setStatus("weatherStatus", `Consultando clima para "${query}"...`);
+    $("weatherResult").classList.remove("show");
+    try {
+      const geo = await fetchJson(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=es&format=json`);
+      const place = geo.results?.[0];
+      if (!place) throw new Error("No encontramos esa localidad. Prueba con otro nombre.");
+      const data = await fetchJson(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`);
+      const c = data.current;
+      const icon = c.is_day ? "bi-sun-fill text-warning" : "bi-moon-stars-fill text-primary";
+
+      let forecastHtml = "";
+      if (data.daily?.time) {
+        const days = data.daily.time.slice(0, 5).map((dateStr, idx) => {
+          const dayName = new Date(dateStr + "T12:00:00").toLocaleDateString("es-PE", { weekday: "short", day: "numeric" });
+          const maxT = Math.round(data.daily.temperature_2m_max[idx]);
+          const minT = Math.round(data.daily.temperature_2m_min[idx]);
+          const desc = weatherCodes[data.daily.weather_code[idx]] || "Clima";
+          return `<div class="col"><div class="forecast-day">
+            <div class="small fw-bold text-capitalize">${escapeHtml(dayName)}</div>
+            <div class="small text-secondary text-truncate my-1" title="${escapeHtml(desc)}">${escapeHtml(desc)}</div>
+            <div class="fw-bold">${maxT}° <span class="text-secondary fw-normal">${minT}°</span></div>
+          </div></div>`;
+        }).join("");
+        forecastHtml = `<div class="mt-3 pt-3 border-top"><div class="small fw-semibold text-secondary mb-2">Pronóstico de 5 días</div><div class="row row-cols-2 row-cols-sm-5 g-2">${days}</div></div>`;
+      }
+
+      $("weatherResult").innerHTML = `
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div>
+            <div class="fs-5 fw-bold">${escapeHtml(place.name)}${place.admin1 ? `, ${escapeHtml(place.admin1)}` : ""}${place.country ? `, ${escapeHtml(place.country)}` : ""}</div>
+            <div class="small text-secondary mt-1">${escapeHtml(weatherCodes[c.weather_code] || "Condición actual")}</div>
+            <div class="weather-big mt-2">${Math.round(c.temperature_2m)}°C</div>
+            <div class="small text-secondary mt-1">Sensación térmica de ${Math.round(c.apparent_temperature)}°C</div>
+          </div>
+          <i class="bi ${icon}" style="font-size:54px"></i>
+        </div>
+        <div class="row g-3 mt-2 pt-3 border-top">
+          <div class="col-6 col-md-4"><div class="small text-secondary">Humedad relativa</div><div class="fw-semibold fs-6">${c.relative_humidity_2m}%</div></div>
+          <div class="col-6 col-md-4"><div class="small text-secondary">Velocidad del viento</div><div class="fw-semibold fs-6">${c.wind_speed_10m} km/h</div></div>
+          <div class="col-6 col-md-4"><div class="small text-secondary">Precipitación</div><div class="fw-semibold fs-6">${c.precipitation} mm</div></div>
+        </div>
+        ${forecastHtml}
+        <div class="small text-secondary mt-3">Coordenadas: ${place.latitude.toFixed(2)}, ${place.longitude.toFixed(2)} · Fuente: Open-Meteo</div>`;
+      $("weatherResult").classList.add("show");
+      setStatus("weatherStatus", "Datos meteorológicos actualizados.");
+    } catch (error) {
+      setStatus("weatherStatus", errorMessage(error), true);
+    }
+  }
+
+  $("weatherForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const query = $("weatherCity").value.trim();
+    if (query) fetchWeatherForCity(query);
+  });
+
+  document.querySelectorAll(".weather-preset").forEach(btn => {
+    btn.addEventListener("click", () => {
+      $("weatherCity").value = btn.dataset.city;
+      fetchWeatherForCity(btn.dataset.city);
+    });
+  });
+
+  // ==========================================
+  // MODULE 8: CURRENCY CONVERTER + SWAP
+  // ==========================================
+  const commonCurrencies = ["PEN", "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "BRL", "MXN", "CHF", "CNY", "CLP", "COP"];
+  const currencyNames = { PEN: "Sol Peruano", USD: "Dólar Estadounidense", EUR: "Euro", CLP: "Peso Chileno", COP: "Peso Colombiano", MXN: "Peso Mexicano", BRL: "Real Brasileño" };
+
+  async function loadCurrencies() {
+    const selects = Array.from(document.querySelectorAll(".currency-select"));
+    try {
+      const data = await fetchJson("https://api.frankfurter.dev/v1/currencies");
+      const all = Object.keys(data).sort();
+      const prioritized = [...commonCurrencies, ...all.filter(c => !commonCurrencies.includes(c))];
+      selects.forEach(select => {
+        select.innerHTML = prioritized.map(code => `<option value="${code}">${code} — ${escapeHtml(currencyNames[code] || data[code] || "")}</option>`).join("");
+      });
+      $("currencyFrom").value = "PEN";
+      $("currencyTo").value = "USD";
+    } catch (error) {
+      selects.forEach(select => {
+        select.innerHTML = commonCurrencies.map(code => `<option value="${code}">${code} — ${escapeHtml(currencyNames[code] || code)}</option>`).join("");
+      });
+      $("currencyFrom").value = "PEN";
+      $("currencyTo").value = "USD";
+    }
+  }
+  loadCurrencies();
+
+  async function convertCurrencyNow() {
+    setStatus("currencyStatus", "Consultando tipo de cambio...");
+    try {
+      const amount = Number($("currencyAmount").value), from = $("currencyFrom").value, to = $("currencyTo").value;
+      if (!Number.isFinite(amount) || amount <= 0) throw new Error("Escribe una cantidad mayor que cero.");
+      let rate, provider = "Frankfurter API";
+      if (from === to) rate = 1;
+      else {
+        try {
+          const data = await fetchJson(`https://api.frankfurter.dev/v1/latest?base=${encodeURIComponent(from)}&symbols=${encodeURIComponent(to)}`);
+          rate = data.rates?.[to];
+          if (!Number.isFinite(rate)) throw new Error("Combinación no incluida en Frankfurter.");
+        } catch (_) {
+          const fallback = await fetchJson(`https://open.er-api.com/v6/latest/${encodeURIComponent(from)}`);
+          if (fallback.result !== "success" || !Number.isFinite(fallback.rates?.[to])) throw new Error("La tasa solicitada no está disponible.");
+          rate = fallback.rates[to];
+          provider = "Open Exchange Rates API";
+        }
+      }
+      const inverse = 1 / rate;
+      $("currencyResult").innerHTML = `
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+          <div>
+            <div class="small text-secondary">${amount.toLocaleString("es-PE")} ${escapeHtml(from)} equivalen a</div>
+            <div class="fs-2 fw-bold text-primary mt-1">${(amount * rate).toLocaleString("es-PE", { maximumFractionDigits: 4 })} ${escapeHtml(to)}</div>
+          </div>
+          <div class="text-sm-end small text-secondary">
+            <div>1 ${escapeHtml(from)} = <strong>${rate.toLocaleString("es-PE", { maximumFractionDigits: 6 })} ${escapeHtml(to)}</strong></div>
+            <div>1 ${escapeHtml(to)} = <strong>${inverse.toLocaleString("es-PE", { maximumFractionDigits: 6 })} ${escapeHtml(from)}</strong></div>
+            <div class="mt-1">Fuente: ${escapeHtml(provider)}</div>
+          </div>
+        </div>`;
+      $("currencyResult").classList.add("show");
+      setStatus("currencyStatus", "Conversión actualizada.");
+    } catch (error) {
+      setStatus("currencyStatus", errorMessage(error), true);
+    }
+  }
+
+  $("currencyForm").addEventListener("submit", e => {
+    e.preventDefault();
+    convertCurrencyNow();
+  });
+
+  $("swapCurrencies").addEventListener("click", () => {
+    const temp = $("currencyFrom").value;
+    $("currencyFrom").value = $("currencyTo").value;
+    $("currencyTo").value = temp;
+    convertCurrencyNow();
+  });
+
+  document.querySelectorAll(".amount-preset").forEach(btn => {
+    btn.addEventListener("click", () => {
+      $("currencyAmount").value = btn.dataset.val;
+      convertCurrencyNow();
+    });
+  });
+
+  // ==========================================
+  // MODULE 9: MOVIES & SERIES (TVMAZE)
+  // ==========================================
+  async function searchMovies(query) {
+    setStatus("movieStatus", `Buscando "${query}" en TVmaze...`);
+    $("movieResults").replaceChildren();
+    try {
+      const results = await fetchJson(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
+      if (!results.length) { setStatus("movieStatus", "No encontramos resultados para esa búsqueda."); return; }
+      results.slice(0, 12).forEach(({ show }) => {
+        const col = document.createElement("div");
+        col.className = "col-12 col-sm-6 col-xl-4";
+        const genres = (show.genres || []).slice(0, 3).join(" · ") || "General";
+        const image = show.image?.medium
+          ? `<img src="${escapeHtml(show.image.medium)}" alt="Póster de ${escapeHtml(show.name)}" loading="lazy">`
+          : '<div class="movie-placeholder"><i class="bi bi-film"></i></div>';
+        const summary = show.summary ? show.summary.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim() : "Sin sinopsis disponible.";
+        const rating = show.rating?.average ? `★ ${show.rating.average}` : "S/C";
+        col.innerHTML = `
+          <article class="panel p-3 movie-card h-100">
+            ${image}
+            <div class="d-flex justify-content-between align-items-start gap-2 mt-3 mb-1">
+              <h3 class="fs-6 fw-bold m-0">${escapeHtml(show.name)}</h3>
+              <span class="badge text-bg-primary">${escapeHtml(rating)}</span>
+            </div>
+            <div class="small text-secondary mb-2">${escapeHtml(genres)}${show.premiered ? ` · ${escapeHtml(show.premiered.slice(0, 4))}` : ""}</div>
+            <p class="small text-secondary mb-3 flex-grow-1">${escapeHtml(summary.slice(0, 160))}${summary.length > 160 ? "…" : ""}</p>
+            ${show.url ? `<a href="${escapeHtml(show.url)}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm w-100">Ver ficha en TVmaze <i class="bi bi-box-arrow-up-right ms-1"></i></a>` : ""}
+          </article>`;
+        $("movieResults").append(col);
+      });
+      setStatus("movieStatus", `${results.length} resultado(s) encontrados.`);
+    } catch (error) {
+      setStatus("movieStatus", errorMessage(error), true);
+    }
+  }
+
+  $("movieForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const q = $("movieQuery").value.trim();
+    if (q) searchMovies(q);
+  });
+
+  document.querySelectorAll(".movie-preset").forEach(btn => {
+    btn.addEventListener("click", () => {
+      $("movieQuery").value = btn.dataset.q;
+      searchMovies(btn.dataset.q);
+    });
+  });
+
+  // ==========================================
+  // MODULE 10: INTERACTIVE SOLAR SYSTEM
+  // ==========================================
+  const PLANET_DATA = {
+    Sol: { type: "Estrella Enana Amarilla", diameter: "1,392,700 km", orbit: "Centro del Sistema Solar", moons: "8 planetas principales", temp: "5,500 °C (superficie)", fact: "Concentra el 99.86% de toda la masa del Sistema Solar." },
+    Mercurio: { type: "Planeta Rocoso", diameter: "4,879 km", orbit: "88 días terrestres", moons: "0 lunas", temp: "-180 °C a 430 °C", fact: "Es el planeta más cercano al Sol y el más pequeño del sistema solar." },
+    Venus: { type: "Planeta Rocoso", diameter: "12,104 km", orbit: "225 días terrestres", moons: "0 lunas", temp: "465 °C promedio", fact: "Gira en sentido contrario a la mayoría de los planetas y tiene una atmósfera densa." },
+    Tierra: { type: "Planeta Rocoso", diameter: "12,742 km", orbit: "365.25 días", moons: "1 luna (Selene)", temp: "15 °C promedio", fact: "El único mundo conocido con océanos de agua líquida estable y vida." },
+    Marte: { type: "Planeta Rocoso", diameter: "6,779 km", orbit: "687 días terrestres", moons: "2 (Fobos y Deimos)", temp: "-63 °C promedio", fact: "Alberga el Monte Olimpo, el volcán más alto de todo el Sistema Solar (21.9 km)." },
+    Júpiter: { type: "Gigante Gaseoso", diameter: "139,820 km", orbit: "11.86 años terrestres", moons: "95 lunas confirmadas", temp: "-110 °C", fact: "Su Gran Mancha Roja es una tormenta anticiclónica mayor que el tamaño de la Tierra." },
+    Saturno: { type: "Gigante Gaseoso", diameter: "116,460 km", orbit: "29.45 años terrestres", moons: "146 lunas confirmadas", temp: "-140 °C", fact: "Sus espectaculares anillos están formados por millones de fragmentos de hielo y roca." },
+    Urano: { type: "Gigante Helado", diameter: "50,724 km", orbit: "84 años terrestres", moons: "28 lunas", temp: "-195 °C", fact: "Rota prácticamente de costado con una inclinación axial de casi 98 grados." },
+    Neptuno: { type: "Gigante Helado", diameter: "49,244 km", orbit: "164.8 años terrestres", moons: "16 lunas", temp: "-201 °C", fact: "Tiene los vientos más veloces del Sistema Solar, superando los 2,100 km/h." }
+  };
+
+  const planetButtonsContainer = $("planetButtons");
+  Object.keys(PLANET_DATA).forEach(name => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip-btn";
+    b.textContent = name;
+    b.addEventListener("click", () => inspectPlanet(name));
+    planetButtonsContainer.append(b);
+  });
+
+  function inspectPlanet(name) {
+    const info = PLANET_DATA[name];
+    if (!info) return;
+    $("planetInspector").innerHTML = `
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3 class="fs-5 fw-bold m-0">${escapeHtml(name)}</h3>
+        <span class="badge text-bg-primary">${escapeHtml(info.type)}</span>
+      </div>
+      <div class="row g-2 small mt-2">
+        <div class="col-6"><span class="text-secondary d-block">Diámetro</span><strong>${escapeHtml(info.diameter)}</strong></div>
+        <div class="col-6"><span class="text-secondary d-block">Periodo orbital</span><strong>${escapeHtml(info.orbit)}</strong></div>
+        <div class="col-6"><span class="text-secondary d-block">Satélites</span><strong>${escapeHtml(info.moons)}</strong></div>
+        <div class="col-6"><span class="text-secondary d-block">Temperatura</span><strong>${escapeHtml(info.temp)}</strong></div>
+      </div>
+      <div class="mt-3 pt-2 border-top small text-secondary">
+        <strong class="text-body"><i class="bi bi-lightbulb text-warning me-1"></i>Dato curioso:</strong> ${escapeHtml(info.fact)}
+      </div>`;
+  }
+  inspectPlanet("Tierra");
+
+  $("solarSystem").addEventListener("click", e => {
+    const target = e.target.closest("[data-planet]");
+    if (target) inspectPlanet(target.dataset.planet);
+  });
+
+  let orbitPaused = false;
+  $("orbitToggle").addEventListener("click", () => {
+    orbitPaused = !orbitPaused;
+    document.querySelectorAll(".orbit").forEach(orbit => orbit.style.animationPlayState = orbitPaused ? "paused" : "running");
+    $("orbitToggle").innerHTML = orbitPaused ? '<i class="bi bi-play-fill me-1"></i>Reanudar' : '<i class="bi bi-pause-fill me-1"></i>Pausar';
+  });
+
+  $("orbitSpeed").addEventListener("input", e => {
+    const val = Number(e.target.value) || 1;
+    $("solarSystem").style.setProperty("--speed-factor", val);
+    $("orbitSpeedBadge").textContent = `${val}x`;
+  });
+
+  // ==========================================
+  // MODULE 11: CHARTS STUDIO (CHART.JS)
+  // ==========================================
+  const CHART_PRESETS = {
+    ventas: "Enero, 42\nFebrero, 58\nMarzo, 49\nAbril, 74\nMayo, 88\nJunio, 95",
+    lenguajes: "JavaScript, 65\nPython, 54\nTypeScript, 43\nSQL, 48\nRust, 22",
+    rendimiento: "Lunes, 1240\nMartes, 1580\nMiércoles, 1890\nJueves, 1720\nViernes, 2150"
+  };
+
+  function renderChart() {
+    if (!window.Chart) { setStatus("chartStatus", "No se pudo cargar Chart.js.", true); return; }
+    const parsed = $("chartData").value.split(/\r?\n/).map(line => line.trim()).filter(Boolean).map(line => {
+      const [label, ...parts] = line.split(",");
+      return { label: label.trim(), value: Number(parts.join(",").trim()) };
+    });
+    if (parsed.length < 1 || parsed.some(item => !item.label || !Number.isFinite(item.value))) {
+      setStatus("chartStatus", "Añade al menos una línea válida con formato Etiqueta, número.", true);
+      return;
+    }
+    if (chartInstance) chartInstance.destroy();
+    const type = $("chartType").value;
+    const isMultiColor = ["doughnut", "polarArea"].includes(type);
+    const colors = ["#6366f1", "#0ea5e9", "#10b981", "#f59e0b", "#ec4899", "#8b5cf6", "#14b8a6", "#f43f5e"];
+    const textColor = getComputedStyle(document.body).color;
+
+    chartInstance = new Chart($("dataChart"), {
+      type,
+      data: {
+        labels: parsed.map(item => item.label),
+        datasets: [{
+          label: "Métrica APIS",
+          data: parsed.map(item => item.value),
+          backgroundColor: isMultiColor ? colors : "rgba(99, 102, 241, 0.72)",
+          borderColor: isMultiColor ? colors : "#6366f1",
+          borderWidth: 2,
+          borderRadius: type === "bar" ? 8 : 0,
+          tension: 0.35,
+          fill: type === "line"
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: isMultiColor || type === "radar", labels: { color: textColor } },
+          tooltip: { enabled: true }
+        },
+        scales: isMultiColor || type === "radar" ? {} : {
+          x: { ticks: { color: textColor }, grid: { display: false } },
+          y: { beginAtZero: true, ticks: { color: textColor }, grid: { color: "rgba(148, 163, 184, 0.15)" } }
+        }
+      }
+    });
+    setStatus("chartStatus", "Gráfico actualizado.");
+  }
+
+  $("renderChart").addEventListener("click", renderChart);
+  $("chartType").addEventListener("change", renderChart);
+  document.querySelectorAll(".chart-preset").forEach(btn => {
+    btn.addEventListener("click", () => {
+      $("chartData").value = CHART_PRESETS[btn.dataset.preset] || CHART_PRESETS.ventas;
+      renderChart();
+    });
+  });
+
+  $("downloadChartBtn").addEventListener("click", () => {
+    if (!chartInstance) renderChart();
+    const link = document.createElement("a");
+    link.download = "apis-grafico.png";
+    link.href = $("dataChart").toDataURL("image/png");
+    link.click();
+    setStatus("chartStatus", "Imagen PNG descargada.");
+  });
+
+  // ==========================================
+  // MODULE 12: JSTREE MODULE HIERARCHY
+  // ==========================================
+  const treeData = [{
+    text: "APIS",
+    state: { opened: true },
+    children: [
+      { text: "Productividad", state: { opened: true }, children: [{ text: "Servicio de correo", data: { page: "email" } }, { text: "Google Calendar", data: { page: "calendar" } }] },
+      { text: "Multimedia", state: { opened: true }, children: [{ text: "Reproductor de audio", data: { page: "audio" } }, { text: "Internet Archive Audio", data: { page: "archive-audio" } }, { text: "Subida de imágenes", data: { page: "images" } }] },
+      { text: "Datos & APIs", state: { opened: true }, children: [{ text: "Geolocalización", data: { page: "location" } }, { text: "Clima", data: { page: "weather" } }, { text: "Cambio de moneda", data: { page: "currency" } }, { text: "Películas y series", data: { page: "movies" } }] },
+      { text: "Visualización", state: { opened: true }, children: [{ text: "Sistema solar", data: { page: "solar" } }, { text: "Gráficos y estadísticas", data: { page: "charts" } }, { text: "Árbol de módulos", data: { page: "tree" } }] }
+    ]
+  }];
+
+  if (window.jQuery?.fn?.jstree) {
+    const $tree = window.jQuery("#moduleTree");
+    $tree.jstree({
+      core: { check_callback: true, data: treeData, themes: { name: "default", dots: true, icons: true } },
+      plugins: ["wholerow", "types"]
+    });
+
+    // Double click node to open module
+    $tree.on("dblclick.jstree", function (e) {
+      const instance = window.jQuery.jstree.reference(this);
+      const node = instance.get_node(e.target);
+      if (node?.data?.page) navigate(node.data.page);
+    });
+
+    $("addTreeNode").addEventListener("click", () => {
+      const tree = $tree.jstree(true);
+      const selected = tree.get_selected();
+      if (!selected.length) {
+        setStatus("treeStatus", "Selecciona primero un nodo en el árbol para agregar un elemento hijo.", true);
+        return;
+      }
+      const label = $("newTreeNodeInput").value.trim() || "Nuevo módulo APIS";
+      const newNodeId = tree.create_node(selected[0], { text: label }, "last");
+      tree.open_node(selected[0]);
+      $("newTreeNodeInput").value = "";
+      setStatus("treeStatus", `Nodo "${label}" agregado correctamente.`);
+      if (newNodeId) tree.deselect_all();
+    });
+
+    $("renameTreeNode").addEventListener("click", () => {
+      const tree = $tree.jstree(true);
+      const selected = tree.get_selected();
+      if (!selected.length) {
+        setStatus("treeStatus", "Selecciona el nodo que deseas renombrar.", true);
+        return;
+      }
+      tree.edit(selected[0]);
+      setStatus("treeStatus", "Editando nombre del nodo...");
+    });
+
+    $("deleteTreeNode").addEventListener("click", () => {
+      const tree = $tree.jstree(true);
+      const selected = tree.get_selected();
+      if (!selected.length) {
+        setStatus("treeStatus", "Selecciona un nodo para eliminarlo.", true);
+        return;
+      }
+      tree.delete_node(selected[0]);
+      setStatus("treeStatus", "Nodo eliminado del árbol.");
+    });
+
+    $("expandTreeBtn").addEventListener("click", () => $tree.jstree("open_all"));
+    $("collapseTreeBtn").addEventListener("click", () => $tree.jstree("close_all"));
+  } else {
+    $("moduleTree").innerHTML = '<div class="notice text-danger">No se pudo cargar jsTree. Revisa tu conexión a internet.</div>';
+  }
+})();
+</script>
+</body>
